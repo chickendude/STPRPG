@@ -53,38 +53,37 @@ void load_map(const Map *map, Camera *camera)
     }
 }
 
-//void update_tilemap(Map *map)
-//{
-//    Camera cam = ;
-//    Camera prev_cam = ;
-//    int bg_tiles_offset = map->width * map->height;
-//    int map_left = cam.x >> 4;
-//    int map_right = map_left + 15;
-//    int map_top = cam.y >> 4;
-//    int map_bottom = map_top + 10;
-//
-//    // Handle left and right edges
-//    for (int y = 0; y < BG_HEIGHT_16; y++)
-//    {
-//        int map_y = map_top + y;
-//        if (cam.x < prev_cam.x)
-//            draw_tile(map_left, map_y, map);
-//        else
-//            draw_tile(map_right, map_y, map);
-//    }
-//
-//    // Handle top and bottom edges
-//    for (int x = 0; x < BG_WIDTH_16; x++)
-//    {
-//        int map_x = map_left + x;
-//        if (cam.y < prev_cam.y)
-//            draw_tile(map_x, map_top, map);
-//        else
-//            draw_tile(map_x, map_bottom, map);
-//    }
-//
-//    // update prev cam: prev_camera = cam;
-//}
+Camera prev_cam = {1, 1};
+void update_tilemap(const Map *map, Camera *camera)
+{
+    Camera cam = *camera;
+    int map_left = cam.x >> 4;
+    int map_right = map_left + 15;
+    int map_top = cam.y >> 4;
+    int map_bottom = map_top + 10;
+
+    // Handle left and right edges
+    for (int y = 0; y < BG_HEIGHT_16; y++)
+    {
+        int map_y = map_top + y;
+        if (cam.x < prev_cam.x)
+            draw_tile(map_left, map_y, map);
+        else
+            draw_tile(map_right, map_y, map);
+    }
+
+    // Handle top and bottom edges
+    for (int x = 0; x < BG_WIDTH_16; x++)
+    {
+        int map_x = map_left + x;
+        if (cam.y < prev_cam.y)
+            draw_tile(map_x, map_top, map);
+        else
+            draw_tile(map_x, map_bottom, map);
+    }
+
+    prev_cam = cam;
+}
 
 // -----------------------------------------------------------------------------
 // Private functions definitions

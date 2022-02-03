@@ -14,7 +14,7 @@ struct Map
 
 void load_map(const Map *map, Camera *camera);
 
-void update_tilemap(Camera *camera);
+void update_tilemap(const Map *map, Camera *camera);
 
 extern const Map* maps[NUM_MAPS];
 

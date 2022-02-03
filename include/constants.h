@@ -1,11 +1,14 @@
 #ifndef STPRPG_CONSTANTS_H
 #define STPRPG_CONSTANTS_H
 
+#include <tonc.h>
+
 /**
  * The number of 16x16 tiles that will cover the whole width of the map + one
  * extra for scrolling.
  *
- * Our background is 32x32 tiles, but with 16x16 tiles we can only fit 16 in it.
+ * A GBA background can fit 32 8x8 tiles, since we are using 16x16 tiles we can
+ * only fit 16 in it.
  */
 #define BG_WIDTH_16 16
 
@@ -22,5 +25,10 @@
  * The maximum number of maps that can be in the game.
  */
 #define NUM_MAPS 1
+
+/**
+ * The size (in pixels) per tile.
+ */
+#define TILE_SIZE 16
 
 #endif //STPRPG_CONSTANTS_H

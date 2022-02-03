@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(test C)
+project(stprpg C)
 
 set(CMAKE_C_STANDARD 99)
 
@@ -10,4 +10,4 @@ include_directories($ENV{DEVKITPRO}/libtonc/include/)
 include_directories($ENV{DEVKITARM}/arm-none-eabi/include)
 include_directories(include gfx maps)
 
-add_executable(test source/main.c source/map.c source/state.c source/camera.c source/map_town.c include/map_town.h)
+add_executable(stprpg source/main.c source/map.c source/state.c source/camera.c source/map_town.c include/map_town.h)
