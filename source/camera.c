@@ -1,6 +1,8 @@
 #include <tonc.h>
 
 #include "camera.h"
+#include "constants.h"
+#include "map.h"
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -23,6 +25,15 @@ void update_camera(Camera *camera, int x, int y)
     camera->y = y;
 }
 
+void normalize_camera(Camera *camera, const Map *map) {
+    int right_edge = (map->width * TILE_SIZE) - SCREEN_WIDTH;
+    int bottom_edge = (map->height * TILE_SIZE) - SCREEN_HEIGHT;
+
+    if (camera->x < 0) camera->x = 0;
+    if (camera->y < 0) camera->y = 0;
+    if (camera->x > right_edge) camera->x = right_edge;
+    if (camera->y > bottom_edge) camera->y = bottom_edge;
+}
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------

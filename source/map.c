@@ -10,7 +10,7 @@
 
 const Map map_1 = {
         "Kelwyd",
-        0, 0,
+        14, 7,
         MAP1_WIDTH, MAP1_HEIGHT,
         map1_tilemap
 };
@@ -24,23 +24,12 @@ void draw_tile(int x, int y, const Map *map);
 // Public function definitions
 // -----------------------------------------------------------------------------
 
-void load_map(const Map *map, Camera *camera)
+void goto_map_pixel(const Map *map, Camera *camera, int map_x, int map_y)
 {
-    // CBB = charblock base, where the tile sprites are stored. there are 4 CBB
-    // SBB = screenblock base, where the tilemap is stored. there are 32 SBBs
-    REG_BG0CNT = BG_CBB(0) | BG_SBB(30) | BG_PRIO(2) | BG_REG_32x32 | BG_4BPP;
-//    REG_BG1CNT = BG_CBB(1) | BG_SBB(31) | BG_PRIO(3) | BG_REG_32x32 | BG_4BPP;
-    memcpy32(tile_mem, tilesTiles, tilesTilesLen / 4);
-    memcpy32(pal_bg_mem, tilesPal, 16);
+    camera->x = map_x - SCREEN_WIDTH / 2;
+    camera->y = map_y - SCREEN_HEIGHT / 2;
+    normalize_camera(camera, map);
 
-//    memcpy32(tile_mem[1], ground_tilesTiles, ground_tilesTilesLen / 4);
-//    memcpy32(&pal_bg_mem[3 * 16], ground_tilesPal, 16);
-
-//    camera->x = (map->start_x << 4) - SCREEN_WIDTH / 2;
-//    camera->y = (map->start_y << 4) - SCREEN_HEIGHT / 2;
-
-    camera->x = 0;
-    camera->y = 0;
     int x, y;
     int start_x = camera->x >> 4;
     int start_y = camera->y >> 4;
@@ -53,7 +42,25 @@ void load_map(const Map *map, Camera *camera)
     }
 }
 
+void goto_map_tile(const Map *map, Camera *camera, int map_x, int map_y)
+{
+    goto_map_pixel(map, camera, map_x << 4, map_y << 4);
+}
+
+void load_map(const Map *map, Camera *camera)
+{
+    // CBB = charblock base, where the tile sprites are stored. there are 4 CBB
+    // SBB = screenblock base, where the tilemap is stored. there are 32 SBBs
+    REG_BG0CNT = BG_CBB(0) | BG_SBB(30) | BG_PRIO(2) | BG_REG_32x32 | BG_4BPP;
+    memcpy32(tile_mem, tilesTiles, tilesTilesLen / 4);
+    memcpy32(pal_bg_mem, tilesPal, 16);
+
+    goto_map_tile(map, camera, map->start_x, map->start_y);
+}
+
+// TODO: Move this into a Game struct or something
 Camera prev_cam = {1, 1};
+
 void update_tilemap(const Map *map, Camera *camera)
 {
     Camera cam = *camera;

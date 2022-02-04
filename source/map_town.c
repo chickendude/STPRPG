@@ -63,20 +63,9 @@ void input(StateStack *state_stack)
     int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
     camera.x += key_tri_horz() * speed;
     camera.y += key_tri_vert() * speed;
-    limit_camera_bounds();
+    normalize_camera(&camera, map);
 }
 
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-
-void limit_camera_bounds()
-{
-    int right_edge = (map->width * TILE_SIZE) - SCREEN_WIDTH;
-    int bottom_edge = (map->height * TILE_SIZE) - SCREEN_HEIGHT;
-
-    if (camera.x < 0) camera.x = 0;
-    if (camera.y < 0) camera.y = 0;
-    if (camera.x > right_edge) camera.x = right_edge;
-    if (camera.y > bottom_edge) camera.y = bottom_edge;
-}
