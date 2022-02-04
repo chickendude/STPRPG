@@ -60,8 +60,9 @@ void update()
 
 void input(StateStack *state_stack)
 {
-    camera.x += key_tri_horz();
-    camera.y += key_tri_vert();
+    int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
+    camera.x += key_tri_horz() * speed;
+    camera.y += key_tri_vert() * speed;
     limit_camera_bounds();
 }
 

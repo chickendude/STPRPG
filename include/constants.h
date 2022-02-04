@@ -27,6 +27,13 @@
 #define NUM_MAPS 1
 
 /**
+ * The number of pixels to move when running.
+ *
+ * The default speed otherwise is one pixel per frame.
+ */
+#define RUNNING_SPEED 4
+
+/**
  * The size (in pixels) per tile.
  */
 #define TILE_SIZE 16
