@@ -24,6 +24,6 @@ void normalize_camera(Camera *camera, const Map *map);
  * @param camera The camera to update.
  * @param player The player to focus on.
  */
-void update_camera(Camera *camera, Player *player);
+void update_camera(Camera *camera, Entity *player);
 
 #endif //LAUGURPIL_CAMERA_H

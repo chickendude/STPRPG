@@ -1,13 +1,13 @@
 #include <tonc.h>
 
-#include "player.h"
+#include "entity.h"
 
 #include "camera.h"
 
 // Sprite data
 #include "tann.h"
 
-Player tann = {0 * 16, 10, "Tann"};
+Entity tann = {&tannTiles, tannTilesLen, 10, 20};
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -17,28 +17,28 @@ Player tann = {0 * 16, 10, "Tann"};
 // -----------------------------------------------------------------------------
 // Public function definitions
 // -----------------------------------------------------------------------------
-void load_player(Player *player, int x, int y)
+void load_entity(Entity *entity, int oam_index, int x, int y)
 {
-    oam_init(obj_mem, 128);
-    // Load Car sprites
-    memcpy32(tile_mem[4], tannTiles, tannTilesLen / 4);
+    // Load entity sprites
+    memcpy32(tile_mem[4], entity->sprite_data, entity->sprite_data_len / 4);
     memcpy32(pal_obj_mem, tannPal, tannPalLen / 4);
 
-    // Load player's initial coordinates
-    player->x = x;
-    player->y = y;
+    // Load entity's initial coordinates
+    entity->x = x;
+    entity->y = y;
+    entity->oam = &obj_mem[oam_index];
 
-    obj_set_attr(player->oam,
+    obj_set_attr(entity->oam,
                  ATTR0_4BPP | ATTR0_SQUARE | y,
                  ATTR1_SIZE_16x16 | x,
-                 ATTR2_PALBANK(0) | player->sprite_id
+                 ATTR2_PALBANK(0) | 0
     );
 
 }
 
-void draw_player(const Player *player, const Camera *camera)
+void draw_entity(const Entity *entity, const Camera *camera)
 {
-    obj_set_pos(player->oam, player->x - camera->x, player->y - camera->y);
+    obj_set_pos(entity->oam, entity->x - camera->x, entity->y - camera->y);
 }
 
 

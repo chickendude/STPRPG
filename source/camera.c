@@ -3,7 +3,7 @@
 #include "camera.h"
 #include "constants.h"
 #include "map.h"
-#include "player.h"
+#include "entity.h"
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -14,7 +14,7 @@
 // Public function definitions
 // -----------------------------------------------------------------------------
 
-void update_camera(Camera *camera, Player *player)
+void update_camera(Camera *camera, Entity *player)
 {
     int x = player->x + TILE_SIZE / 2;
     int y = player->y + TILE_SIZE / 2;

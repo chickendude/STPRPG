@@ -10,4 +10,4 @@ include_directories($ENV{DEVKITPRO}/libtonc/include/)
 include_directories($ENV{DEVKITARM}/arm-none-eabi/include)
 include_directories(include gfx maps)
 
-add_executable(stprpg source/main.c source/map.c source/state.c source/camera.c source/map_town.c include/map_town.h source/player.c include/player.h)
+add_executable(stprpg source/main.c source/map.c source/state.c source/camera.c source/map_town.c include/map_town.h source/entity.c include/entity.h)

@@ -4,7 +4,7 @@
 
 #include "camera.h"
 #include "map.h"
-#include "player.h"
+#include "entity.h"
 #include "state.h"
 
 static Camera camera;
@@ -42,11 +42,12 @@ void initialize(StateType leaving_state, void *parameter)
     // Turn off display while we load/prepare everything
     REG_DISPCNT = 0;
 
+    oam_init(obj_mem, 128);
+
     map = &map_1;
 
     load_map(map, &camera);
-    tann.oam = &obj_mem[0];
-    load_player(&tann, 10, 20);
+    load_entity(&tann, 0, 10, 20);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 | DCNT_BG0 | DCNT_OBJ | DCNT_OBJ_1D;
@@ -70,7 +71,7 @@ void update()
     update_tilemap(map, &camera);
     update_camera(&camera, &tann);
     normalize_camera(&camera, map);
-    draw_player(&tann, &camera);
+    draw_entity(&tann, &camera);
     REG_BG0HOFS = camera.x;
     REG_BG0VOFS = camera.y;
 }
