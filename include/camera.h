@@ -17,6 +17,13 @@ struct Camera {
  * @param map The map the camera needs to fit within.
  */
 void normalize_camera(Camera *camera, const Map *map);
-void update_camera(Camera *camera, int x, int y);
+
+/**
+ * Centers the camera around the player.
+ *
+ * @param camera The camera to update.
+ * @param player The player to focus on.
+ */
+void update_camera(Camera *camera, Player *player);
 
 #endif //LAUGURPIL_CAMERA_H
