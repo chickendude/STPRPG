@@ -1,20 +1,34 @@
 #ifndef STPRPG_ENTITY_H
 #define STPRPG_ENTITY_H
 
+#include <tonc.h>
 #include "types.h"
+
+enum EntityDirection {
+    DOWN, UP, LEFT, RIGHT
+};
+
+struct EntitySprite
+{
+    const unsigned int *data;
+    const int data_len;
+};
 
 struct Entity
 {
-    const unsigned int *sprite_data;
-    const int sprite_data_len;
-    int x, y;
+    EntitySprite *sprite;
+    // optional values (they will get overwritten upon loading
+    int x, y, frame, frame_counter;
+    EntityDirection direction;
     OBJ_ATTR *oam;
 };
 
-void load_entity(Entity *entity, int oam_index, int x, int y);
+void
+load_entity(Entity *entity, const EntitySprite *sprite, int oam_index,
+            int x, int y);
 
 void draw_entity(const Entity *entity, const Camera *camera);
 
-extern Entity tann;
+extern const EntitySprite ES_TANN;
 
 #endif //STPRPG_ENTITY_H

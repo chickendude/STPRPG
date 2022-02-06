@@ -8,6 +8,20 @@ include_directories($ENV{DEVKITARM}/include/)
 include_directories($ENV{DEVKITPRO}/libgba/include/)
 include_directories($ENV{DEVKITPRO}/libtonc/include/)
 include_directories($ENV{DEVKITARM}/arm-none-eabi/include)
-include_directories(include gfx maps)
+include_directories(include gfx maps include/character_states)
 
-add_executable(stprpg source/main.c source/map.c source/state.c source/camera.c source/map_town.c include/map_town.h source/entity.c include/entity.h)
+add_executable(stprpg
+        source/main.c
+        source/map.c
+        source/state.c
+        source/camera.c
+        source/map_town.c
+        include/map_town.h
+        source/entity.c
+        include/entity.h
+        source/character.c
+        include/character.h
+        source/character_states/move_state.c
+        source/character_states/wait_state.c
+        source/character_states/states.c
+        include/character_states/states.h )

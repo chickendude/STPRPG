@@ -10,7 +10,7 @@
 
 const Map map_1 = {
         "Kelwyd",
-        14, 7,
+        0, 0,
         MAP1_WIDTH, MAP1_HEIGHT,
         map1_tilemap
 };

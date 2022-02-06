@@ -3,12 +3,15 @@
 #include "map_town.h"
 
 #include "camera.h"
-#include "map.h"
+#include "character.h"
+#include "character_states/states.h"
 #include "entity.h"
+#include "map.h"
 #include "state.h"
 
-static Camera camera;
+static Camera camera = {0, 0};
 const static Map *map;
+Character tann;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -20,9 +23,6 @@ static void initialize(StateType leaving_state, void *parameter);
 static void input(StateStack *state_stack);
 
 static void update();
-
-// Private functions
-void limit_camera_bounds();
 
 // -----------------------------------------------------------------------------
 // Public variable definitions
@@ -47,7 +47,9 @@ void initialize(StateType leaving_state, void *parameter)
     map = &map_1;
 
     load_map(map, &camera);
-    load_entity(&tann, 0, 10, 20);
+    load_character(&tann, &ES_TANN, 0, 10, 20);
+    change_state(&tann, &wait_state);
+    tann.state->initialize(NONE, &tann);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 | DCNT_BG0 | DCNT_OBJ | DCNT_OBJ_1D;
@@ -60,27 +62,18 @@ int frame = 0;
 
 void update()
 {
-    if ((frame++ & 0x0f) == 0)
-    {
-        int attr2 = obj_mem[0].attr2;
-        int id = (attr2 & ATTR2_ID_MASK) + 4;
-        if (id >= 4 * 4) id = 0;
-        obj_mem[0].attr2 = attr2 & ~ATTR2_ID_MASK | id;
-    }
-
     update_tilemap(map, &camera);
-    update_camera(&camera, &tann);
+    update_camera(&camera, &tann.entity);
     normalize_camera(&camera, map);
-    draw_entity(&tann, &camera);
+    draw_entity(&tann.entity, &camera);
+    tann.state->update();
     REG_BG0HOFS = camera.x;
     REG_BG0VOFS = camera.y;
 }
 
 void input(StateStack *state_stack)
 {
-    int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
-    tann.x += key_tri_horz() * speed;
-    tann.y += key_tri_vert() * speed;
+    tann.state->input(NULL);
 }
 
 // -----------------------------------------------------------------------------

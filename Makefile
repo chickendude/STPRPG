@@ -24,7 +24,7 @@ include $(DEVKITARM)/gba_rules
 #---------------------------------------------------------------------------------
 TARGET		:= $(notdir $(CURDIR))
 BUILD		:= build
-SOURCES		:= source maps gfx
+SOURCES		:= source maps gfx source/character_states
 INCLUDES	:= include gfx maps
 DATA		:=
 GRAPHICS	:= gfx

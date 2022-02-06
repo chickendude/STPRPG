@@ -7,7 +7,7 @@
 // Sprite data
 #include "tann.h"
 
-Entity tann = {&tannTiles, tannTilesLen, 10, 20};
+const EntitySprite ES_TANN = {&tannTiles, tannTilesLen};
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -17,10 +17,11 @@ Entity tann = {&tannTiles, tannTilesLen, 10, 20};
 // -----------------------------------------------------------------------------
 // Public function definitions
 // -----------------------------------------------------------------------------
-void load_entity(Entity *entity, int oam_index, int x, int y)
+void
+load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x, int y)
 {
     // Load entity sprites
-    memcpy32(tile_mem[4], entity->sprite_data, entity->sprite_data_len / 4);
+    memcpy32(tile_mem[4], sprite->data, sprite->data_len / 4);
     memcpy32(pal_obj_mem, tannPal, tannPalLen / 4);
 
     // Load entity's initial coordinates

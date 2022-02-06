@@ -4,6 +4,8 @@
 #include "state.h"
 
 // TODO: Add replace_state() function
+// TODO: Create CharacterState struct so that characters can have a state
+//  system unique to their needs.
 
 //---------------------------------------------------------------------------------
 // Program entry point
