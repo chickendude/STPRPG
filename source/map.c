@@ -109,7 +109,6 @@ void draw_tile(int x, int y, const Map *map)
     for (int i = 0; i < 3; i++)
     {
         int map_tile_id = (map->tilemap[map_size * i + tile_index] << 2);
-        if (i > 0 && map_tile_id == 0) continue;
 
         // Load tiles into the screen block
         se_mem[29 + i][y + x] = map_tile_id;

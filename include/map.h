@@ -47,6 +47,8 @@ void load_map(const Map *map, Camera *camera);
 
 void update_tilemap(const Map *map, Camera *camera);
 
+void handle_map_collision(const Map *map, Entity *entity);
+
 extern const Map* maps[NUM_MAPS];
 
 extern const Map map_1;
