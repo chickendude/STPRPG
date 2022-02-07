@@ -32,7 +32,7 @@ void initialize(StateType leaving_state, void *param_character)
     character = param_character;
     entity = &character->entity;
     entity->frame = 0;
-    entity->oam->attr2 = entity->direction * 16;
+    set_entity_sprite_id(entity, entity->direction * 16);
 }
 
 static void input(StateStack *state_stack)

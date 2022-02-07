@@ -18,7 +18,8 @@ const EntitySprite ES_TANN = {&tannTiles, tannTilesLen};
 // Public function definitions
 // -----------------------------------------------------------------------------
 void
-load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x, int y)
+load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x,
+            int y)
 {
     // Load entity sprites
     memcpy32(tile_mem[4], sprite->data, sprite->data_len / 4);
@@ -32,7 +33,7 @@ load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x, in
     obj_set_attr(entity->oam,
                  ATTR0_4BPP | ATTR0_SQUARE | y,
                  ATTR1_SIZE_16x16 | x,
-                 ATTR2_PALBANK(0) | 0
+                 ATTR2_PALBANK(0) | ATTR2_PRIO(2) | 0
     );
 
 }
@@ -42,6 +43,12 @@ void draw_entity(const Entity *entity, const Camera *camera)
     obj_set_pos(entity->oam, entity->x - camera->x, entity->y - camera->y);
 }
 
+void set_entity_sprite_id(const Entity *entity, unsigned int sprite_id)
+{
+    int attr2 = entity->oam->attr2 & ~ATTR2_ID_MASK;
+    entity->oam->attr2 = attr2 | sprite_id;
+
+}
 
 // -----------------------------------------------------------------------------
 // Private functions definitions

@@ -49,12 +49,13 @@ static void input(StateStack *state_stack)
     int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
     entity->x += x * speed;
     entity->y += y * speed;
+
     if (x == -1) entity->direction = LEFT;
     else if (x == 1) entity->direction = RIGHT;
     else if (y == -1) entity->direction = UP;
     else if (y == 1) entity->direction = DOWN;
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    entity->oam->attr2 = entity->frame + entity->direction * 16;
+    set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
 }
 
 static void update()
@@ -70,8 +71,6 @@ static void update()
         if (entity->frame >= 4 * 4) entity->frame = 0;
 
         // Point OAM to correct sprite id
-        int attr2 = entity->oam->attr2;
-        entity->oam->attr2 = (attr2 & ~ATTR2_ID_MASK) |
-                             entity->frame + entity->direction * 16;
+        set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
     }
 }

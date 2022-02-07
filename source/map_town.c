@@ -52,7 +52,9 @@ void initialize(StateType leaving_state, void *parameter)
     tann.state->initialize(NONE, &tann);
 
     vid_vsync();
-    REG_DISPCNT = DCNT_MODE0 | DCNT_BG0 | DCNT_OBJ | DCNT_OBJ_1D;
+    REG_DISPCNT = DCNT_MODE0 |
+                  DCNT_BG0 | DCNT_BG1 | DCNT_BG2 |
+                  DCNT_OBJ | DCNT_OBJ_1D;
 
     REG_BG0HOFS = 0;
     REG_BG0VOFS = 0;
@@ -68,7 +70,11 @@ void update()
     draw_entity(&tann.entity, &camera);
     tann.state->update();
     REG_BG0HOFS = camera.x;
+    REG_BG1HOFS = camera.x;
+    REG_BG2HOFS = camera.x;
     REG_BG0VOFS = camera.y;
+    REG_BG1VOFS = camera.y;
+    REG_BG2VOFS = camera.y;
 }
 
 void input(StateStack *state_stack)

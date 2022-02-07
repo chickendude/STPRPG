@@ -51,8 +51,10 @@ void load_map(const Map *map, Camera *camera)
 {
     // CBB = charblock base, where the tile sprites are stored. there are 4 CBB
     // SBB = screenblock base, where the tilemap is stored. there are 32 SBBs
-    REG_BG0CNT = BG_CBB(0) | BG_SBB(30) | BG_PRIO(2) | BG_REG_32x32 | BG_4BPP;
-    memcpy32(tile_mem, tilesTiles, tilesTilesLen / 4);
+    REG_BG0CNT = BG_CBB(0) | BG_SBB(29) | BG_PRIO(3) | BG_REG_32x32 | BG_4BPP;
+    REG_BG1CNT = BG_CBB(0) | BG_SBB(30) | BG_PRIO(2) | BG_REG_32x32 | BG_4BPP;
+    REG_BG2CNT = BG_CBB(0) | BG_SBB(31) | BG_PRIO(0) | BG_REG_32x32 | BG_4BPP;
+    memcpy32((int*)MEM_VRAM + 32, tilesTiles, tilesTilesLen / 4);
     memcpy32(pal_bg_mem, tilesPal, 16);
 
     goto_map_tile(map, camera, map->start_x, map->start_y);
@@ -98,15 +100,21 @@ void update_tilemap(const Map *map, Camera *camera)
 
 void draw_tile(int x, int y, const Map *map)
 {
-    int offset = y * map->width + x;
-    int map_tile_id = (map->tilemap[offset] << 2);
+    int map_size = map->width * map->height;
+    int tile_index = y * map->width + x;
 
     x = (x & 15) * 2;
     y = (y & 15) * 32 * 2;
 
-    // Load tiles into the screen block
-    se_mem[30][y + x] = map_tile_id;
-    se_mem[30][y + x + 1] = map_tile_id + 1;
-    se_mem[30][y + 32 + x] = map_tile_id + 2;
-    se_mem[30][y + 32 + x + 1] = map_tile_id + 3;
+    for (int i = 0; i < 3; i++)
+    {
+        int map_tile_id = (map->tilemap[map_size * i + tile_index] << 2);
+        if (i > 0 && map_tile_id == 0) continue;
+
+        // Load tiles into the screen block
+        se_mem[29 + i][y + x] = map_tile_id;
+        se_mem[29 + i][y + x + 1] = map_tile_id + 1;
+        se_mem[29 + i][y + 32 + x] = map_tile_id + 2;
+        se_mem[29 + i][y + 32 + x + 1] = map_tile_id + 3;
+    }
 }
