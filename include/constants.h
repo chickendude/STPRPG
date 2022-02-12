@@ -22,6 +22,23 @@
 #define BG_HEIGHT_16 11
 
 /**
+ * The tile id of the first tile that a player cannot walk through.
+ */
+#define BLOCKING_TILE_START 3
+
+/**
+ * The height of an entity. The sprite is 16x16 but we may want the collision
+ * box to be smaller than that.
+ */
+#define ENTITY_HEIGHT 6
+
+/**
+ * The width of an entity. The sprite is 16x16 but we may want the collision
+ * box to be smaller than that.
+ */
+#define ENTITY_WIDTH 12
+
+/**
  * The maximum number of maps that can be in the game.
  */
 #define NUM_MAPS 1

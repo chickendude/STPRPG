@@ -6,6 +6,7 @@
 #include "constants.h"
 #include "state.h"
 
+static CharacterMap cm;
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
@@ -14,11 +15,13 @@
 // -----------------------------------------------------------------------------
 // Public function definitions
 // -----------------------------------------------------------------------------
-void change_state(Character *character, const State *state)
+void change_state(Character *character, const Map *map, const State *state)
 {
     // TODO: Call exit function
     character->state = state;
-    state->initialize(0, character);
+    cm.character = character;
+    cm.map = map;
+    state->initialize(0, &cm);
 }
 
 

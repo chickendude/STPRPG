@@ -47,9 +47,10 @@ void load_map(const Map *map, Camera *camera);
 
 void update_tilemap(const Map *map, Camera *camera);
 
-void handle_map_collision(const Map *map, Entity *entity);
+//void is_tile_passable(Entity *entity, const Map *map);
+bool is_tile_passable(Entity *entity, int x_off, int y_off, const Map *map);
 
-extern const Map* maps[NUM_MAPS];
+extern const Map *maps[NUM_MAPS];
 
 extern const Map map_1;
 

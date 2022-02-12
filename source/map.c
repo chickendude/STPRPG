@@ -3,6 +3,7 @@
 
 #include "camera.h"
 #include "constants.h"
+#include "entity.h"
 // sprite data
 #include "tiles.h"
 // tilemap data
@@ -54,7 +55,7 @@ void load_map(const Map *map, Camera *camera)
     REG_BG0CNT = BG_CBB(0) | BG_SBB(29) | BG_PRIO(3) | BG_REG_32x32 | BG_4BPP;
     REG_BG1CNT = BG_CBB(0) | BG_SBB(30) | BG_PRIO(2) | BG_REG_32x32 | BG_4BPP;
     REG_BG2CNT = BG_CBB(0) | BG_SBB(31) | BG_PRIO(0) | BG_REG_32x32 | BG_4BPP;
-    memcpy32((int*)MEM_VRAM + 32, tilesTiles, tilesTilesLen / 4);
+    memcpy32((int *) MEM_VRAM + 32, tilesTiles, tilesTilesLen / 4);
     memcpy32(pal_bg_mem, tilesPal, 16);
 
     goto_map_tile(map, camera, map->start_x, map->start_y);
@@ -92,6 +93,28 @@ void update_tilemap(const Map *map, Camera *camera)
     }
 
     prev_cam = cam;
+}
+
+bool is_tile_passable(Entity *entity, int x_off, int y_off, const Map *map)
+{
+    int x1 = entity->x + (16 - ENTITY_WIDTH) / 2 + x_off;
+    int y1 = entity->y + (16 - ENTITY_HEIGHT) + y_off;
+    int x2 = x1 + ENTITY_WIDTH - 1;
+    int y2 = y1 + ENTITY_HEIGHT - 1;
+
+    const unsigned char *collision_map =
+            map->tilemap + map->width * map->height;
+    int map_x1 = x1 / 16;
+    int map_x2 = x2 / 16;
+    int map_y1 = y1 / 16;
+    int map_y2 = y2 / 16;
+    int tile1 = collision_map[map_y1 * map->width + map_x1];
+    int tile2 = collision_map[map_y1 * map->width + map_x2];
+    int tile3 = collision_map[map_y2 * map->width + map_x1];
+    int tile4 = collision_map[map_y2 * map->width + map_x2];
+
+    return tile1 < BLOCKING_TILE_START && tile2 < BLOCKING_TILE_START &&
+           tile3 < BLOCKING_TILE_START && tile4 < BLOCKING_TILE_START;
 }
 
 // -----------------------------------------------------------------------------

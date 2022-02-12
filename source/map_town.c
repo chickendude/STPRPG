@@ -47,9 +47,9 @@ void initialize(StateType leaving_state, void *parameter)
     map = &map_1;
 
     load_map(map, &camera);
-    load_character(&tann, &ES_TANN, 0, 10, 20);
-    change_state(&tann, &wait_state);
-    tann.state->initialize(NONE, &tann);
+    load_character(&tann, &ES_TANN, 0, 20, 20);
+    change_state(&tann, map, &wait_state);
+//    tann.state->initialize(NONE, &tann);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 |
@@ -69,6 +69,7 @@ void update()
     normalize_camera(&camera, map);
     draw_entity(&tann.entity, &camera);
     tann.state->update();
+//    is_tile_passable(&tann.entity, map);
     REG_BG0HOFS = camera.x;
     REG_BG1HOFS = camera.x;
     REG_BG2HOFS = camera.x;

@@ -4,10 +4,12 @@
 
 #include "character.h"
 #include "constants.h"
+#include "map.h"
 #include "state.h"
 
 static Character *character;
 static Entity *entity;
+static const Map *map;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -29,31 +31,41 @@ const State move_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-void initialize(StateType leaving_state, void *param_character)
+void initialize(StateType leaving_state, void *param_cm)
 {
-    character = param_character;
+    CharacterMap *cm = param_cm;
+    character = cm->character;
+    map = cm->map;
     entity = &character->entity;
     entity->frame = 0;
 }
 
 static void input(StateStack *state_stack)
 {
-    int x = key_tri_horz();
-    int y = key_tri_vert();
-    if (x == 0 && y == 0)
+    int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
+    int dx = key_tri_horz() * speed;
+    int dy = key_tri_vert() * speed;
+
+    // Check if keys were released
+    if (dx == 0 && dy == 0)
     {
-        change_state(character, &wait_state);
+        change_state(character, map, &wait_state);
         return;
     }
 
-    int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
-    entity->x += x * speed;
-    entity->y += y * speed;
+    if (is_tile_passable(entity, dx, 0, map)) {
+        entity->x += dx;
+    }
+    if (is_tile_passable(entity, 0, dy, map))
+    {
+        entity->y += dy;
+    }
 
-    if (x == -1) entity->direction = LEFT;
-    else if (x == 1) entity->direction = RIGHT;
-    else if (y == -1) entity->direction = UP;
-    else if (y == 1) entity->direction = DOWN;
+    // Prioritize left/right-facing sprites
+    if (dx < 0) entity->direction = LEFT;
+    else if (dx > 0) entity->direction = RIGHT;
+    else if (dy < 0) entity->direction = UP;
+    else if (dy > 0) entity->direction = DOWN;
     // TODO: Otherwise it takes a couple frames to update the player's direction
     set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
 }
