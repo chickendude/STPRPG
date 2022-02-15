@@ -97,7 +97,7 @@ void update_tilemap(const Map *map, Camera *camera)
 
 bool is_tile_passable(Entity *entity, int x_off, int y_off, const Map *map)
 {
-    int x1 = entity->x + (16 - ENTITY_WIDTH) / 2 + x_off;
+    int x1 = entity->x + ENTITY_MARGIN_H + x_off;
     int y1 = entity->y + (16 - ENTITY_HEIGHT) + y_off;
     int x2 = x1 + ENTITY_WIDTH - 1;
     int y2 = y1 + ENTITY_HEIGHT - 1;

@@ -31,7 +31,7 @@ const State move_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-void initialize(StateType leaving_state, void *param_cm)
+static void initialize(StateType leaving_state, void *param_cm)
 {
     CharacterMap *cm = param_cm;
     character = cm->character;
@@ -53,12 +53,32 @@ static void input(StateStack *state_stack)
         return;
     }
 
-    if (is_tile_passable(entity, dx, 0, map)) {
+    // Move horizontally
+    if (is_tile_passable(entity, dx, 0, map))
+    {
         entity->x += dx;
+    } else
+    {
+        // Move over one tile (TILE_SIZE) and shift left 2 pixels
+        // (ENTITY_MARGIN_H)
+        entity->x = ((entity->x + dx) & 0xFFF0) + (TILE_SIZE - ENTITY_MARGIN_H);
+        if (dx > 0)
+        {
+            entity->x -= ENTITY_WIDTH;
+        }
     }
+
+    // Move vertically
     if (is_tile_passable(entity, 0, dy, map))
     {
         entity->y += dy;
+    } else
+    {
+        entity->y = (entity->y + dy) & 0xFFF0;
+        if (dy < 0)
+        {
+            entity->y += ENTITY_HEIGHT;
+        }
     }
 
     // Prioritize left/right-facing sprites

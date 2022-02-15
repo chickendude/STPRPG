@@ -39,6 +39,13 @@
 #define ENTITY_WIDTH 12
 
 /**
+ * Entity's horizontal margin.
+ *
+ * This is how many pixels there are on either side of an entity's sprite.
+ */
+#define ENTITY_MARGIN_H ((TILE_SIZE - ENTITY_WIDTH) / 2)
+
+/**
  * The maximum number of maps that can be in the game.
  */
 #define NUM_MAPS 1
@@ -48,7 +55,7 @@
  *
  * The default speed otherwise is one pixel per frame.
  */
-#define RUNNING_SPEED 4
+#define RUNNING_SPEED 6
 
 /**
  * The size (in pixels) per tile.
