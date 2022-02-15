@@ -66,6 +66,14 @@ static void input(StateStack *state_stack)
         {
             entity->x -= ENTITY_WIDTH;
         }
+
+        // Help player around corners
+        int y_offset = entity->y & 0xF;
+        if (y_offset < 8 && is_tile_passable(entity, dx, -y_offset, map))
+            entity->y--;
+        else if (y_offset < 8 &&
+                 is_tile_passable(entity, dx, ENTITY_HEIGHT - y_offset, map))
+            entity->y++;
     }
 
     // Move vertically
@@ -79,6 +87,14 @@ static void input(StateStack *state_stack)
         {
             entity->y += ENTITY_HEIGHT;
         }
+
+        // Help player around corners
+        int x_offset = entity->x & 0xF;
+        if (x_offset < 12 && is_tile_passable(entity, -x_offset, dy, map))
+            entity->x--;
+        else if (x_offset > 4 &&
+                 is_tile_passable(entity, TILE_SIZE - x_offset, dy, map))
+            entity->x++;
     }
 
     // Prioritize left/right-facing sprites
