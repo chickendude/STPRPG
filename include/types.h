@@ -1,6 +1,7 @@
 #ifndef STPRPG_TYPES_H
 #define STPRPG_TYPES_H
 
+typedef struct ActionTeleport ActionTeleport;
 typedef struct Camera Camera;
 typedef struct Character Character;
 typedef struct Entity Entity;

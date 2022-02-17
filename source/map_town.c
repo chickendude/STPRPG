@@ -2,6 +2,7 @@
 
 #include "map_town.h"
 
+#include "actions.h"
 #include "camera.h"
 #include "character.h"
 #include "character_states/states.h"
@@ -81,6 +82,11 @@ void update()
 void input(StateStack *state_stack)
 {
     tann.state->input(NULL);
+    if (key_is_down(KEY_L)) {
+        action_teleport(&teleport1, &camera, &tann.entity);
+    } else if (key_is_down(KEY_R)) {
+        action_teleport(&teleport2, &camera, &tann.entity);
+    }
 }
 
 // -----------------------------------------------------------------------------

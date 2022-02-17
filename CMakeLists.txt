@@ -24,4 +24,4 @@ add_executable(stprpg
         source/character_states/move_state.c
         source/character_states/wait_state.c
         source/character_states/states.c
-        include/character_states/states.h )
+        include/character_states/states.h source/actions.c include/actions.h)
