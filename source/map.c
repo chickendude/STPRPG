@@ -1,20 +1,30 @@
 #include <tonc.h>
 #include "map.h"
 
+#include "actions.h"
 #include "camera.h"
 #include "constants.h"
 #include "entity.h"
+#include "trigger.h"
 // sprite data
 #include "tiles.h"
 // tilemap data
 #include "maps.h"
 
+const Trigger map_1_triggers[2] = {
+        {5, 5, &teleport2},
+        {28, 5, &teleport1},
+};
+
 const Map map_1 = {
         "Kelwyd",
         0, 0,
         MAP1_WIDTH, MAP1_HEIGHT,
+        sizeof map_1_triggers,
+        &map_1_triggers,
         map1_tilemap
 };
+
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------

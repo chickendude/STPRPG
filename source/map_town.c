@@ -49,7 +49,9 @@ void initialize(StateType leaving_state, void *parameter)
 
     load_map(map, &camera);
     load_character(&tann, &ES_TANN, 0, 20, 20);
-    change_state(&tann, map, &wait_state);
+
+    CharacterStateParam esp = {&tann, &camera, map};
+    change_state(esp, &wait_state);
 //    tann.state->initialize(NONE, &tann);
 
     vid_vsync();
@@ -82,9 +84,11 @@ void update()
 void input(StateStack *state_stack)
 {
     tann.state->input(NULL);
-    if (key_is_down(KEY_L)) {
+    if (key_is_down(KEY_L))
+    {
         action_teleport(&teleport1, &camera, &tann.entity);
-    } else if (key_is_down(KEY_R)) {
+    } else if (key_is_down(KEY_R))
+    {
         action_teleport(&teleport2, &camera, &tann.entity);
     }
 }

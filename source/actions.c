@@ -1,9 +1,8 @@
 #include "actions.h"
 #include "entity.h"
 #include "map.h"
-#include "maps.h"
 
-struct ActionTeleport teleport1 = {&map_1, 5, 5};
+struct ActionTeleport teleport1 = {&map_1, 5, 6};
 struct ActionTeleport teleport2 = {&map_1, 28, 6};
 // -----------------------------------------------------------------------------
 // Private function declarations

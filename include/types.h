@@ -9,6 +9,7 @@ typedef struct EntitySprite EntitySprite;
 typedef struct Map Map;
 typedef struct State State;
 typedef struct StateStack StateStack;
+typedef struct Trigger Trigger;
 
 typedef enum EntityDirection EntityDirection;
 

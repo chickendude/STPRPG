@@ -2,13 +2,17 @@
 
 #include "character_states/states.h"
 
+#include "actions.h"
 #include "character.h"
 #include "constants.h"
 #include "map.h"
 #include "state.h"
+#include "trigger.h"
 
+static CharacterStateParam *state_params;
 static Character *character;
 static Entity *entity;
+static Camera *camera;
 static const Map *map;
 
 // -----------------------------------------------------------------------------
@@ -31,11 +35,12 @@ const State move_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-static void initialize(StateType leaving_state, void *param_cm)
+static void initialize(StateType leaving_state, void *parameter)
 {
-    CharacterMap *cm = param_cm;
-    character = cm->character;
-    map = cm->map;
+    state_params = parameter;
+    camera = state_params->camera;
+    character = state_params->character;
+    map = state_params->map;
     entity = &character->entity;
     entity->frame = 0;
 }
@@ -49,7 +54,7 @@ static void input(StateStack *state_stack)
     // Check if keys were released
     if (dx == 0 && dy == 0)
     {
-        change_state(character, map, &wait_state);
+        change_state(*state_params, &wait_state);
         return;
     }
 
@@ -102,6 +107,28 @@ static void input(StateStack *state_stack)
     else if (dx > 0) entity->direction = RIGHT;
     else if (dy < 0) entity->direction = UP;
     else if (dy > 0) entity->direction = DOWN;
+
+    for (int i = 0; i < map->num_triggers; i++)
+    {
+        const Trigger *trigger = &map->triggers[i];
+        int m_x = trigger->map_x << 4;
+        int m_y = trigger->map_y << 4;
+        int m_w = TILE_SIZE;
+        int m_h = TILE_SIZE;
+        int e_x = entity->x + ENTITY_MARGIN_H;
+        int e_y = entity->y + (TILE_SIZE - ENTITY_HEIGHT);
+        int e_h = ENTITY_HEIGHT;
+        int e_w = ENTITY_WIDTH;
+        if (e_x < m_x + m_w &&
+            e_x + e_w > m_x &&
+            e_y < m_y + m_h &&
+            e_y + e_h > m_y)
+        {
+           action_teleport(trigger->action, camera, entity);
+        }
+    }
+
+
     // TODO: Otherwise it takes a couple frames to update the player's direction
     set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
 }

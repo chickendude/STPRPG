@@ -9,6 +9,8 @@ struct Map
     const char title[15];
     int start_x, start_y;
     int width, height;
+    int num_triggers;
+    const Trigger *triggers;
     const unsigned char *tilemap;
 };
 
