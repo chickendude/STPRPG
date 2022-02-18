@@ -6,8 +6,7 @@
 typedef struct CharacterStateParam
 {
     Character *character;
-    Camera *camera;
-    const Map *map;
+    Game *game;
 } CharacterStateParam;
 
 void change_state(CharacterStateParam csp, const State *state);

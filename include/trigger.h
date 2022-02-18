@@ -8,6 +8,6 @@ struct Trigger {
     void *action;
 };
 
-extern const Trigger trigger_1, trigger_2;
+void get_triggers_at_xy(const Trigger **triggers, int x, int y, const Map *map);
 
 #endif //STPRPG_TRIGGER_H

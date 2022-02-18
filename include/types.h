@@ -6,6 +6,7 @@ typedef struct Camera Camera;
 typedef struct Character Character;
 typedef struct Entity Entity;
 typedef struct EntitySprite EntitySprite;
+typedef struct Game Game;
 typedef struct Map Map;
 typedef struct State State;
 typedef struct StateStack StateStack;

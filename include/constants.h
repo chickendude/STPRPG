@@ -46,6 +46,11 @@
 #define ENTITY_MARGIN_H ((TILE_SIZE - ENTITY_WIDTH) / 2)
 
 /**
+ * The maximum number of triggers the player can be standing on at once.
+ */
+#define MAX_TRIGGERS 4
+
+/**
  * The maximum number of maps that can be in the game.
  */
 #define NUM_MAPS 1

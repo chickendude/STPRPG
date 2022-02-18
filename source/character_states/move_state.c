@@ -5,15 +5,14 @@
 #include "actions.h"
 #include "character.h"
 #include "constants.h"
+#include "game.h"
 #include "map.h"
 #include "state.h"
 #include "trigger.h"
 
 static CharacterStateParam *state_params;
+static Game *game;
 static Character *character;
-static Entity *entity;
-static Camera *camera;
-static const Map *map;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -38,11 +37,9 @@ const State move_state = {&initialize, &update, &input};
 static void initialize(StateType leaving_state, void *parameter)
 {
     state_params = parameter;
-    camera = state_params->camera;
+    game = state_params->game;
     character = state_params->character;
-    map = state_params->map;
-    entity = &character->entity;
-    entity->frame = 0;
+    character->entity.frame = 0;
 }
 
 static void input(StateStack *state_stack)
@@ -58,83 +55,53 @@ static void input(StateStack *state_stack)
         return;
     }
 
-    // Move horizontally
-    if (is_tile_passable(entity, dx, 0, map))
-    {
-        entity->x += dx;
-    } else
-    {
-        // Move over one tile (TILE_SIZE) and shift left 2 pixels
-        // (ENTITY_MARGIN_H)
-        entity->x = ((entity->x + dx) & 0xFFF0) + (TILE_SIZE - ENTITY_MARGIN_H);
-        if (dx > 0)
-        {
-            entity->x -= ENTITY_WIDTH;
-        }
+    const Trigger *pre_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
+    const Trigger *post_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
 
-        // Help player around corners
-        int y_offset = entity->y & 0xF;
-        if (y_offset < 8 && is_tile_passable(entity, dx, -y_offset, map))
-            entity->y--;
-        else if (y_offset < 8 &&
-                 is_tile_passable(entity, dx, ENTITY_HEIGHT - y_offset, map))
-            entity->y++;
+    Entity *entity = &character->entity;
+    get_triggers_at_xy(pre_triggers, entity->x, entity->y, game->current_map);
+    move_entity(entity, dx, dy, game->current_map);
+    get_triggers_at_xy(post_triggers, entity->x, entity->y, game->current_map);
+
+    // check if user entered trigger
+    for (int i = 0; i < MAX_TRIGGERS; i++)
+    {
+        const Trigger *trigger = post_triggers[i];
+        bool was_on_trigger = false;
+        for (int j = 0; j < MAX_TRIGGERS; j++)
+        {
+            was_on_trigger |= trigger == pre_triggers[j];
+        }
+        if (!was_on_trigger)
+        {
+           action_teleport(trigger->action, &game->camera, entity);
+        }
     }
 
-    // Move vertically
-    if (is_tile_passable(entity, 0, dy, map))
+    // check if user exited trigger
+    for (int i = 0; i < MAX_TRIGGERS; i++)
     {
-        entity->y += dy;
-    } else
-    {
-        entity->y = (entity->y + dy) & 0xFFF0;
-        if (dy < 0)
+        const Trigger *trigger = pre_triggers[i];
+        bool still_on_trigger = false;
+        for (int j = 0; j < MAX_TRIGGERS; j++)
         {
-            entity->y += ENTITY_HEIGHT;
+            still_on_trigger |= trigger == post_triggers[j];
         }
-
-        // Help player around corners
-        int x_offset = entity->x & 0xF;
-        if (x_offset < 12 && is_tile_passable(entity, -x_offset, dy, map))
-            entity->x--;
-        else if (x_offset > 4 &&
-                 is_tile_passable(entity, TILE_SIZE - x_offset, dy, map))
-            entity->x++;
-    }
-
-    // Prioritize left/right-facing sprites
-    if (dx < 0) entity->direction = LEFT;
-    else if (dx > 0) entity->direction = RIGHT;
-    else if (dy < 0) entity->direction = UP;
-    else if (dy > 0) entity->direction = DOWN;
-
-    for (int i = 0; i < map->num_triggers; i++)
-    {
-        const Trigger *trigger = &map->triggers[i];
-        int m_x = trigger->map_x << 4;
-        int m_y = trigger->map_y << 4;
-        int m_w = TILE_SIZE;
-        int m_h = TILE_SIZE;
-        int e_x = entity->x + ENTITY_MARGIN_H;
-        int e_y = entity->y + (TILE_SIZE - ENTITY_HEIGHT);
-        int e_h = ENTITY_HEIGHT;
-        int e_w = ENTITY_WIDTH;
-        if (e_x < m_x + m_w &&
-            e_x + e_w > m_x &&
-            e_y < m_y + m_h &&
-            e_y + e_h > m_y)
+        if (!still_on_trigger)
         {
-           action_teleport(trigger->action, camera, entity);
+            action_teleport(trigger->action, &game->camera, entity);
         }
     }
 
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
+    set_entity_sprite_id(entity, entity
+                                         ->frame + entity->direction * 16);
 }
 
 static void update()
 {
+    Entity *entity = &character->entity;
     if (entity->frame_counter++ >= 10)
     {
         entity->frame_counter = 0;

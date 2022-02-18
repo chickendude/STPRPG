@@ -7,11 +7,11 @@
 #include "character.h"
 #include "character_states/states.h"
 #include "entity.h"
+#include "game.h"
 #include "map.h"
 #include "state.h"
 
-static Camera camera = {0, 0};
-const static Map *map;
+static Game game;
 Character tann;
 
 // -----------------------------------------------------------------------------
@@ -45,12 +45,12 @@ void initialize(StateType leaving_state, void *parameter)
 
     oam_init(obj_mem, 128);
 
-    map = &map_1;
+    game.current_map = &map_1;
 
-    load_map(map, &camera);
+    load_map(game.current_map, &game.camera);
     load_character(&tann, &ES_TANN, 0, 20, 20);
 
-    CharacterStateParam esp = {&tann, &camera, map};
+    CharacterStateParam esp = {&tann, &game};
     change_state(esp, &wait_state);
 //    tann.state->initialize(NONE, &tann);
 
@@ -67,30 +67,26 @@ int frame = 0;
 
 void update()
 {
-    update_tilemap(map, &camera);
-    update_camera(&camera, &tann.entity);
-    normalize_camera(&camera, map);
-    draw_entity(&tann.entity, &camera);
+    Camera *camera = &game.camera;
+    Map *map = game.current_map;
+
+    update_tilemap(map, camera);
+    update_camera(camera, &tann.entity);
+    normalize_camera(camera, map);
+    draw_entity(&tann.entity, camera);
     tann.state->update();
 //    is_tile_passable(&tann.entity, map);
-    REG_BG0HOFS = camera.x;
-    REG_BG1HOFS = camera.x;
-    REG_BG2HOFS = camera.x;
-    REG_BG0VOFS = camera.y;
-    REG_BG1VOFS = camera.y;
-    REG_BG2VOFS = camera.y;
+    REG_BG0HOFS = camera->x;
+    REG_BG1HOFS = camera->x;
+    REG_BG2HOFS = camera->x;
+    REG_BG0VOFS = camera->y;
+    REG_BG1VOFS = camera->y;
+    REG_BG2VOFS = camera->y;
 }
 
 void input(StateStack *state_stack)
 {
     tann.state->input(NULL);
-    if (key_is_down(KEY_L))
-    {
-        action_teleport(&teleport1, &camera, &tann.entity);
-    } else if (key_is_down(KEY_R))
-    {
-        action_teleport(&teleport2, &camera, &tann.entity);
-    }
 }
 
 // -----------------------------------------------------------------------------

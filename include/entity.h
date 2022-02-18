@@ -4,6 +4,7 @@
 #include <tonc.h>
 #include "types.h"
 
+// Note: The code to calculate the sprite id relies on this order
 enum EntityDirection
 {
     DOWN, UP, LEFT, RIGHT
@@ -29,6 +30,8 @@ load_entity(Entity *entity, const EntitySprite *sprite, int oam_index,
             int x, int y);
 
 void draw_entity(const Entity *entity, const Camera *camera);
+
+void move_entity(Entity *entity, int dx, int dy, const Map *map);
 
 void set_entity_sprite_id(const Entity *entity, unsigned int sprite_id);
 
