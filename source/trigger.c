@@ -41,6 +41,19 @@ void get_triggers_at_xy(const Trigger **triggers, int x, int y, const Map *map)
     }
 }
 
+void
+execute_trigger(const ActionType action_type, const void *action, Game *game)
+{
+    if (action_type == ACT_NONE || action == NULL) return;
+
+    switch (action_type)
+    {
+        case ACT_TELEPORT:
+            action_teleport(action, game);
+            break;
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------

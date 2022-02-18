@@ -12,6 +12,7 @@ typedef struct State State;
 typedef struct StateStack StateStack;
 typedef struct Trigger Trigger;
 
+typedef enum ActionType ActionType;
 typedef enum EntityDirection EntityDirection;
 
 #endif //STPRPG_TYPES_H

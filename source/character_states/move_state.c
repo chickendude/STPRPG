@@ -63,7 +63,7 @@ static void input(StateStack *state_stack)
     move_entity(entity, dx, dy, game->current_map);
     get_triggers_at_xy(post_triggers, entity->x, entity->y, game->current_map);
 
-    // check if user entered trigger
+    // Check if user entered trigger tile
     for (int i = 0; i < MAX_TRIGGERS; i++)
     {
         const Trigger *trigger = post_triggers[i];
@@ -74,11 +74,11 @@ static void input(StateStack *state_stack)
         }
         if (!was_on_trigger)
         {
-           action_teleport(trigger->action, &game->camera, entity);
+            execute_trigger(trigger->on_enter_type, trigger->on_enter, game);
         }
     }
 
-    // check if user exited trigger
+    // Check if user exited trigger tile
     for (int i = 0; i < MAX_TRIGGERS; i++)
     {
         const Trigger *trigger = pre_triggers[i];
@@ -89,14 +89,12 @@ static void input(StateStack *state_stack)
         }
         if (!still_on_trigger)
         {
-            action_teleport(trigger->action, &game->camera, entity);
+            execute_trigger(trigger->on_exit_type, trigger->on_exit, game);
         }
     }
 
-
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_entity_sprite_id(entity, entity
-                                         ->frame + entity->direction * 16);
+    set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
 }
 
 static void update()

@@ -46,6 +46,7 @@ void initialize(StateType leaving_state, void *parameter)
     oam_init(obj_mem, 128);
 
     game.current_map = &map_1;
+    game.player = &tann;
 
     load_map(game.current_map, &game.camera);
     load_character(&tann, &ES_TANN, 0, 20, 20);
@@ -68,7 +69,7 @@ int frame = 0;
 void update()
 {
     Camera *camera = &game.camera;
-    Map *map = game.current_map;
+    const Map *map = game.current_map;
 
     update_tilemap(map, camera);
     update_camera(camera, &tann.entity);

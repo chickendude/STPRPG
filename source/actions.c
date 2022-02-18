@@ -1,9 +1,10 @@
 #include "actions.h"
 #include "entity.h"
+#include "game.h"
 #include "map.h"
 
-struct ActionTeleport teleport1 = {&map_1, 5, 6};
-struct ActionTeleport teleport2 = {&map_1, 28, 6};
+const ActionTeleport teleport1 = {&map_1, 5, 6};
+const ActionTeleport teleport2 = {&map_1, 28, 6};
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
@@ -14,13 +15,14 @@ struct ActionTeleport teleport2 = {&map_1, 28, 6};
 // -----------------------------------------------------------------------------
 
 void
-action_teleport(ActionTeleport *action_teleport, Camera *camera, Entity *entity)
+action_teleport(ActionTeleport *action_teleport, Game *game)
 {
+    Entity *entity = &game->player->entity;
     int x = action_teleport->x;
     int y = action_teleport->y;
     entity->x = x << 4;
     entity->y = y << 4;
-    goto_map_tile(action_teleport->map, camera, x, y);
+    goto_map_tile(action_teleport->map, &game->camera, x, y);
 }
 
 // -----------------------------------------------------------------------------
