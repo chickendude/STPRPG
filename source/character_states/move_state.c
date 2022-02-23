@@ -55,43 +55,17 @@ static void input(StateStack *state_stack)
         return;
     }
 
+    Entity *entity = &character->entity;
+    // Load triggers at location before moving and after moving to check for
+    // on_enter and on_exit triggers.
     const Trigger *pre_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
     const Trigger *post_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
 
-    Entity *entity = &character->entity;
     get_triggers_at_xy(pre_triggers, entity->x, entity->y, game->current_map);
     move_entity(entity, dx, dy, game->current_map);
     get_triggers_at_xy(post_triggers, entity->x, entity->y, game->current_map);
 
-    // Check if user entered trigger tile
-    for (int i = 0; i < MAX_TRIGGERS; i++)
-    {
-        const Trigger *trigger = post_triggers[i];
-        bool was_on_trigger = false;
-        for (int j = 0; j < MAX_TRIGGERS; j++)
-        {
-            was_on_trigger |= trigger == pre_triggers[j];
-        }
-        if (!was_on_trigger)
-        {
-            execute_trigger(trigger->on_enter_type, trigger->on_enter, game);
-        }
-    }
-
-    // Check if user exited trigger tile
-    for (int i = 0; i < MAX_TRIGGERS; i++)
-    {
-        const Trigger *trigger = pre_triggers[i];
-        bool still_on_trigger = false;
-        for (int j = 0; j < MAX_TRIGGERS; j++)
-        {
-            still_on_trigger |= trigger == post_triggers[j];
-        }
-        if (!still_on_trigger)
-        {
-            execute_trigger(trigger->on_exit_type, trigger->on_exit, game);
-        }
-    }
+    execute_enter_exit_triggers(pre_triggers, post_triggers, game);
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
     set_entity_sprite_id(entity, entity->frame + entity->direction * 16);

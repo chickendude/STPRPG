@@ -5,7 +5,8 @@
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
-
+void
+execute_trigger(const ActionType action_type, const void *action, Game *game);
 
 // -----------------------------------------------------------------------------
 // Public function definitions
@@ -41,6 +42,43 @@ void get_triggers_at_xy(const Trigger **triggers, int x, int y, const Map *map)
     }
 }
 
+void execute_enter_exit_triggers(const Trigger **pre_triggers,
+                                 const Trigger **post_triggers, Game *game)
+{
+    // Check if user entered trigger tile
+    for (int i = 0; i < MAX_TRIGGERS; i++)
+    {
+        const Trigger *trigger = post_triggers[i];
+        bool was_on_trigger = false;
+        for (int j = 0; j < MAX_TRIGGERS; j++)
+        {
+            was_on_trigger |= trigger == pre_triggers[j];
+        }
+        if (!was_on_trigger)
+        {
+            execute_trigger(trigger->on_enter_type, trigger->on_enter, game);
+        }
+    }
+
+    // Check if user exited trigger tile
+    for (int i = 0; i < MAX_TRIGGERS; i++)
+    {
+        const Trigger *trigger = pre_triggers[i];
+        bool still_on_trigger = false;
+        for (int j = 0; j < MAX_TRIGGERS; j++)
+        {
+            still_on_trigger |= trigger == post_triggers[j];
+        }
+        if (!still_on_trigger)
+        {
+            execute_trigger(trigger->on_exit_type, trigger->on_exit, game);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Private functions definitions
+// -----------------------------------------------------------------------------
 void
 execute_trigger(const ActionType action_type, const void *action, Game *game)
 {
@@ -51,9 +89,8 @@ execute_trigger(const ActionType action_type, const void *action, Game *game)
         case ACT_TELEPORT:
             action_teleport(action, game);
             break;
+        default:
+            break;
     }
 }
 
-// -----------------------------------------------------------------------------
-// Private functions definitions
-// -----------------------------------------------------------------------------
