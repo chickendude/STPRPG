@@ -37,4 +37,13 @@ void get_triggers_at_xy(const Trigger **triggers, int x, int y, const Map *map);
 void execute_enter_exit_triggers(const Trigger **pre_triggers,
                                const Trigger **post_triggers, Game *game);
 
+/**
+ * Runs on_action triggers.
+ *
+ * @param entity The entity to whose position and direction should be used to
+ * check for triggers.
+ * @param game Main Game object.
+ */
+void execute_action_triggers(Entity *entity, Game *game);
+
 #endif //STPRPG_TRIGGER_H

@@ -3,6 +3,7 @@
 #include "character.h"
 #include "constants.h"
 #include "state.h"
+#include "trigger.h"
 
 static CharacterStateParam state_params;
 static Character *character;
@@ -45,7 +46,11 @@ static void input(StateStack *state_stack)
     if (key_tri_vert() || key_tri_horz())
     {
         change_state(state_params, &move_state);
+    } else if (key_hit(KEY_A))
+    {
+        execute_action_triggers(entity, state_params.game);
     }
+
 }
 
 static void update()

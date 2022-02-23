@@ -1,5 +1,7 @@
 #include "trigger.h"
 
+#include "entity.h"
+#include "game.h"
 #include "map.h"
 
 // -----------------------------------------------------------------------------
@@ -74,6 +76,42 @@ void execute_enter_exit_triggers(const Trigger **pre_triggers,
             execute_trigger(trigger->on_exit_type, trigger->on_exit, game);
         }
     }
+}
+
+void execute_action_triggers(Entity *entity, Game *game)
+{
+    const Trigger *triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
+    int dy = 0;
+    int dx = 0;
+
+    switch (entity->direction)
+    {
+        case DOWN:
+            dy = 1;
+            break;
+        case UP:
+            dy = -1;
+            break;
+        case RIGHT:
+            dx = 1;
+            break;
+        case LEFT:
+            dx = -1;
+            break;
+    }
+
+    get_triggers_at_xy(triggers, entity->x + dx, entity->y + dy,
+                       game->current_map);
+
+    // TODO: Only execute first trigger found?
+    for (int i = 0; i < MAX_TRIGGERS; i++)
+    {
+        const Trigger *trigger = triggers[i];
+        if (trigger == NULL) break;
+
+        execute_trigger(trigger->on_action_type, trigger->on_action, game);
+    }
+
 }
 
 // -----------------------------------------------------------------------------

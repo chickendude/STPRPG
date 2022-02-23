@@ -44,7 +44,7 @@ static void initialize(StateType leaving_state, void *parameter)
 
 static void input(StateStack *state_stack)
 {
-    int speed = key_is_down(KEY_A) ? RUNNING_SPEED : 1;
+    int speed = key_is_down(KEY_B) ? RUNNING_SPEED : 1;
     int dx = key_tri_horz() * speed;
     int dy = key_tri_vert() * speed;
 
@@ -56,8 +56,9 @@ static void input(StateStack *state_stack)
     }
 
     Entity *entity = &character->entity;
-    // Load triggers at location before moving and after moving to check for
-    // on_enter and on_exit triggers.
+
+    // Load triggers at entity's location before moving and after moving to
+    // check for on_enter and on_exit triggers.
     const Trigger *pre_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
     const Trigger *post_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
 
@@ -65,7 +66,15 @@ static void input(StateStack *state_stack)
     move_entity(entity, dx, dy, game->current_map);
     get_triggers_at_xy(post_triggers, entity->x, entity->y, game->current_map);
 
-    execute_enter_exit_triggers(pre_triggers, post_triggers, game);
+    // Execute action triggers if A was pressed, otherwise check for enter/exit
+    // triggers
+    if (key_hit(KEY_A))
+    {
+        execute_action_triggers(entity, game);
+    } else
+    {
+        execute_enter_exit_triggers(pre_triggers, post_triggers, game);
+    }
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
     set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
