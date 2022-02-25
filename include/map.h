@@ -11,6 +11,8 @@ struct Map
     int width, height;
     int num_triggers;
     const Trigger *triggers;
+    int num_npcs;
+    const Character *npcs;
     const unsigned char *tilemap;
 };
 

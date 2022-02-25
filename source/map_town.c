@@ -12,7 +12,8 @@
 #include "state.h"
 
 static Game game;
-Character tann;
+static Character tann;
+static Character npcs[2];
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -50,6 +51,8 @@ void initialize(StateType leaving_state, void *parameter)
 
     load_map(game.current_map, &game.camera);
     load_character(&tann, &ES_TANN, 0, 20, 20);
+    load_character(&npcs[0], game.current_map->npcs[0].entity->sprite, 1, 40, 40);
+    npcs[0].state = game.current_map->npcs[0].state;
 
     CharacterStateParam esp = {&tann, &game};
     change_state(esp, &wait_state);
@@ -64,8 +67,6 @@ void initialize(StateType leaving_state, void *parameter)
     REG_BG0VOFS = 0;
 }
 
-int frame = 0;
-
 void update()
 {
     Camera *camera = &game.camera;
@@ -76,6 +77,12 @@ void update()
     normalize_camera(camera, map);
     draw_entity(&tann.entity, camera);
     tann.state->update();
+    for (int i = 0; i < game.current_map->num_npcs; i++)
+    {
+        Character *npc = &game.current_map->npcs[i];
+//        npc->state->update();
+        break;
+    }
 //    is_tile_passable(&tann.entity, map);
     REG_BG0HOFS = camera->x;
     REG_BG1HOFS = camera->x;

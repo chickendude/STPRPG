@@ -39,7 +39,7 @@ static void initialize(StateType leaving_state, void *parameter)
     state_params = parameter;
     game = state_params->game;
     character = state_params->character;
-    character->entity.frame = 0;
+    character->entity->frame = 0;
 }
 
 static void input(StateStack *state_stack)

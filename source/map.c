@@ -11,30 +11,6 @@
 // tilemap data
 #include "maps.h"
 
-const Trigger map_1_triggers[3] = {
-        {5,  5,
-                ACT_TELEPORT, &teleport2,
-                ACT_NONE, NULL,
-                ACT_NONE, NULL},
-        {6,  5,
-                ACT_NONE, NULL,
-                ACT_NONE, NULL,
-                ACT_TELEPORT, &teleport2},
-        {28, 5,
-                ACT_TELEPORT, &teleport1,
-                ACT_NONE, NULL,
-                ACT_NONE, NULL},
-};
-
-const Map map_1 = {
-        "Kelwyd",
-        0, 0,
-        MAP1_WIDTH, MAP1_HEIGHT,
-        sizeof(map_1_triggers) / sizeof(map_1_triggers[0]),
-        &map_1_triggers,
-        map1_tilemap
-};
-
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------

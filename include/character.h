@@ -6,8 +6,9 @@
 
 struct Character
 {
-    Entity entity;
+    const Entity *entity;
     const State *state;
+    int frame;
 };
 
 void load_character(Character *character, const EntitySprite *sprite,

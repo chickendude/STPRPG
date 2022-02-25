@@ -15,7 +15,7 @@
 void load_character(Character *character, const EntitySprite *sprite,
                     int oam_index, int x, int y)
 {
-    character->state = &wait_state;
+//    character->state = &wait_state;
     load_entity(&character->entity, sprite, oam_index, x, y);
 }
 

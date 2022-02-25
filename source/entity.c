@@ -10,6 +10,8 @@
 
 const EntitySprite ES_TANN = {&tannTiles, tannTilesLen};
 
+const Entity E_TANN = {&ES_TANN};
+
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
