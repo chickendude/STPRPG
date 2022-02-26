@@ -59,12 +59,15 @@ void initialize(StateType leaving_state, void *parameter)
     load_character(&tann, &tann, 0);
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
-        load_character(&npcs[i], &game.current_map->npcs[i], i + 1);
+        Character *npc = &npcs[i];
+        load_character(npc, &game.current_map->npcs[i], i + 1);
+        CharacterStateParam esp = {npc, &game};
+        npc->state->initialize(NONE, &esp);
     }
 
     CharacterStateParam esp = {&tann, &game};
     change_state(esp, &wait_state);
-//    tann.state->initialize(NONE, &tann);
+    tann.state->initialize(NONE, &esp);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 |
