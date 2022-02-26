@@ -17,7 +17,7 @@ const ActionTeleport teleport2 = {&map_1, 28, 6};
 void
 action_teleport(ActionTeleport *action_teleport, Game *game)
 {
-    Character *character = &game->player;
+    Character *character = game->player;
     int x = action_teleport->x;
     int y = action_teleport->y;
     character->x = x << 4;

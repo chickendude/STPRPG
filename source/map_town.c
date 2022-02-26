@@ -57,8 +57,10 @@ void initialize(StateType leaving_state, void *parameter)
 
     load_map(game.current_map, &game.camera);
     load_character(&tann, &tann, 0);
-    load_character(&npcs[0], &game.current_map->npcs[0], 1);
-    npcs[0].state = game.current_map->npcs[0].state;
+    for (int i = 0; i < game.current_map->num_npcs; i++)
+    {
+        load_character(&npcs[i], &game.current_map->npcs[i], i + 1);
+    }
 
     CharacterStateParam esp = {&tann, &game};
     change_state(esp, &wait_state);
@@ -78,19 +80,19 @@ void update()
     Camera *camera = &game.camera;
     const Map *map = game.current_map;
 
-    update_tilemap(map, camera);
-    update_camera(camera, &tann.entity);
+    update_camera(camera, &tann);
     normalize_camera(camera, map);
+    update_tilemap(map, camera);
     draw_character(&tann, camera);
-    draw_character(&npcs[0], camera);
     tann.state->update();
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
-        Character *npc = &game.current_map->npcs[i];
-        npc->state->update();
-        break;
+        Character *npc = &npcs[i];
+        if (npc != NULL){
+            draw_character(npc, camera);
+            npc->state->update();
+        }
     }
-//    is_tile_passable(&tann.entity, map);
     REG_BG0HOFS = camera->x;
     REG_BG1HOFS = camera->x;
     REG_BG2HOFS = camera->x;
