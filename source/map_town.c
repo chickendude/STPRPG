@@ -6,7 +6,7 @@
 #include "camera.h"
 #include "character.h"
 #include "character_states/states.h"
-#include "entity.h"
+#include "sprite.h"
 #include "game.h"
 #include "map.h"
 #include "state.h"
@@ -50,7 +50,7 @@ void initialize(StateType leaving_state, void *parameter)
     // load Tann
     game.player = &tann;
     game.player->state = &wait_state;
-    game.player->entity = &E_TANN;
+    game.player->entity = &S_TANN;
     game.player->direction = DOWN;
     game.player->x = game.current_map->start_x;
     game.player->y = game.current_map->start_y;

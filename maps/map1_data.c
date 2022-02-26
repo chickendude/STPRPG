@@ -1,7 +1,7 @@
 #include "map1.h"
 
 #include "character.h"
-#include "entity.h"
+#include "sprite.h"
 #include "map.h"
 #include "character_states/states.h"
 #include "trigger.h"
@@ -26,14 +26,14 @@ const Trigger map_1_triggers[NUM_TRIGGERS] = {
 
 const Character npcs[NUM_NPCS] = {
         {
-                &E_TANN,
+                &S_TANN,
                 &npc_stand_state,
                 2,
                 2,
                 DOWN
         },
         {
-                &E_TANN,
+                &S_TANN,
                 &npc_stand_state,
                 3,
                 3,

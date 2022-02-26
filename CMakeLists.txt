@@ -17,8 +17,8 @@ add_executable(stprpg
         source/camera.c
         source/map_town.c
         include/map_town.h
-        source/entity.c
-        include/entity.h
+        source/sprite.c
+        include/sprite.h
         source/character.c
         include/character.h
         source/character_states/move_state.c

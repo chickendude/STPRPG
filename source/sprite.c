@@ -1,6 +1,6 @@
 #include <tonc.h>
 
-#include "entity.h"
+#include "sprite.h"
 
 #include "camera.h"
 #include "map.h"
@@ -8,9 +8,7 @@
 // Sprite data
 #include "tann.h"
 
-const EntitySprite ES_TANN = {&tannTiles, tannTilesLen};
-
-const Entity E_TANN = {&ES_TANN};
+const Sprite S_TANN = {&tannTiles, tannTilesLen};
 
 // -----------------------------------------------------------------------------
 // Private function declarations

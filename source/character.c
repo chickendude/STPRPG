@@ -2,7 +2,7 @@
 
 #include "camera.h"
 #include "character_states/states.h"
-#include "entity.h"
+#include "sprite.h"
 #include "map.h"
 
 // Sprite data
@@ -35,8 +35,8 @@ void load_character(Character *character_dst, const Character *character_src,
                     int oam_index)
 {
 //    character->state = &wait_state;
-    const EntitySprite *sprite = character_src->entity->sprite;
-    // Load entity sprites
+    const Sprite *sprite = character_src->entity;
+    // Load sprite sprites
     memcpy32(tile_mem[4], sprite->data, sprite->data_len / 4);
     memcpy32(pal_obj_mem, tannPal, tannPalLen / 4);
 

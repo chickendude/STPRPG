@@ -1,5 +1,5 @@
 #include "actions.h"
-#include "entity.h"
+#include "sprite.h"
 #include "game.h"
 #include "map.h"
 

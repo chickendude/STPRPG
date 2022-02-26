@@ -1,15 +1,15 @@
 #ifndef STPRPG_CHARACTER_H
 #define STPRPG_CHARACTER_H
 
-#include "entity.h"
+#include "sprite.h"
 #include "types.h"
 
 struct Character
 {
-    const Entity *entity;
+    const Sprite *entity;
     const State *state;
     int x, y;
-    EntityDirection direction;
+    SpriteDirection direction;
     // Optional fields (should be set to zero/filled in automatically)
     int frame, frame_counter;
     OBJ_ATTR *oam;

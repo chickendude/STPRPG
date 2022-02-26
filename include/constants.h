@@ -39,7 +39,7 @@
 #define ENTITY_WIDTH 12
 
 /**
- * Entity's horizontal margin.
+ * Sprite's horizontal margin.
  *
  * This is how many pixels there are on either side of an entity's sprite.
  */

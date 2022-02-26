@@ -51,7 +51,7 @@ void load_map(const Map *map, Camera *camera);
 
 void update_tilemap(const Map *map, Camera *camera);
 
-//void is_tile_passable(Entity *entity, const Map *map);
+//void is_tile_passable(Sprite *entity, const Map *map);
 bool is_tile_passable(Character *character, int x_off, int y_off, const Map *map);
 
 extern const Map *maps[NUM_MAPS];
