@@ -17,12 +17,22 @@
 // Public function definitions
 // -----------------------------------------------------------------------------
 
-void draw_entity(const Character *character, const Camera *camera)
+void draw_character(const Character *character, const Camera *camera)
 {
-    obj_set_pos(character->oam, character->x - camera->x, character->y - camera->y);
+    int x = character->x - camera->x;
+    int y = character->y - camera->y;
+
+    // Check if character is offscreen
+    if (x < -16 || y < -16 || x > 240 || y > 160)
+    {
+        x = -16;
+        y = -16;
+    }
+    obj_set_pos(character->oam, x, y);
 }
 
-void load_character(Character *character_dst, const Character *character_src, int oam_index)
+void load_character(Character *character_dst, const Character *character_src,
+                    int oam_index)
 {
 //    character->state = &wait_state;
     const EntitySprite *sprite = character_src->entity->sprite;
@@ -54,7 +64,8 @@ void move_character(Character *character, int dx, int dy, const Map *map)
     {
         // Move over one tile (TILE_SIZE) and shift left 2 pixels (align entity
         // to tile edge if they bumped into a tile)
-        character->x = ((character->x + dx) & 0xFFF0) + (TILE_SIZE - ENTITY_MARGIN_H);
+        character->x =
+                ((character->x + dx) & 0xFFF0) + (TILE_SIZE - ENTITY_MARGIN_H);
         if (dx > 0)
         {
             character->x -= ENTITY_WIDTH;
@@ -89,7 +100,8 @@ void move_character(Character *character, int dx, int dy, const Map *map)
         if (dx == 0)
         {
             int x_offset = character->x & 0xF;
-            if (x_offset < 12 && is_tile_passable(character, -x_offset, dy, map))
+            if (x_offset < 12 &&
+                is_tile_passable(character, -x_offset, dy, map))
                 character->x--;
             else if (x_offset > 4 &&
                      is_tile_passable(character, TILE_SIZE - x_offset, dy, map))

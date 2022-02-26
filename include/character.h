@@ -15,7 +15,7 @@ struct Character
     OBJ_ATTR *oam;
 };
 
-void draw_entity(const Character *character, const Camera *camera);
+void draw_character(const Character *character, const Camera *camera);
 
 void load_character(Character *character_dst, const Character *character_src, int oam_index);
 

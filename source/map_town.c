@@ -81,7 +81,8 @@ void update()
     update_tilemap(map, camera);
     update_camera(camera, &tann.entity);
     normalize_camera(camera, map);
-    draw_entity(&tann.entity, camera);
+    draw_character(&tann, camera);
+    draw_character(&npcs[0], camera);
     tann.state->update();
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
