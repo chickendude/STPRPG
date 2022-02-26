@@ -30,9 +30,9 @@ void initialize(StateType leaving_state, void *param_cm)
     state_params = *(CharacterStateParam *) param_cm;
 
     // Reset entity's sprite data
-    Entity *entity = &state_params.character->entity;
-    entity->frame = 0;
-    set_entity_sprite_id(entity, entity->direction * 16);
+    Character *character = state_params.character;
+    character->frame = 0;
+    set_character_sprite_id(character, character->direction * 16);
 }
 
 static void input(StateStack *state_stack)

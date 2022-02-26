@@ -17,11 +17,11 @@ const ActionTeleport teleport2 = {&map_1, 28, 6};
 void
 action_teleport(ActionTeleport *action_teleport, Game *game)
 {
-    Entity *entity = &game->player->entity;
+    Character *character = &game->player;
     int x = action_teleport->x;
     int y = action_teleport->y;
-    entity->x = x << 4;
-    entity->y = y << 4;
+    character->x = x << 4;
+    character->y = y << 4;
     goto_map_tile(action_teleport->map, &game->camera, x, y);
 }
 

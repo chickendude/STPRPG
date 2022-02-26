@@ -1,6 +1,7 @@
 #include "map1.h"
 
 #include "character.h"
+#include "entity.h"
 #include "map.h"
 #include "character_states/states.h"
 #include "trigger.h"
@@ -26,17 +27,23 @@ const Trigger map_1_triggers[NUM_TRIGGERS] = {
 const Character npcs[NUM_NPCS] = {
         {
                 &E_TANN,
-                &npc_stand_state
+                &npc_stand_state,
+                2,
+                2,
+                DOWN
         },
         {
                 &E_TANN,
-                &npc_stand_state
+                &npc_stand_state,
+                3,
+                3,
+                RIGHT
         }
 };
 
 const Map map_1 = {
         "Kelwyd",
-        0, 0,
+        1, 1,
         MAP1_WIDTH, MAP1_HEIGHT,
         NUM_TRIGGERS,
         &map_1_triggers,

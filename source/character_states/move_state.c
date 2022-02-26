@@ -39,7 +39,7 @@ static void initialize(StateType leaving_state, void *parameter)
     state_params = parameter;
     game = state_params->game;
     character = state_params->character;
-    character->entity->frame = 0;
+    character->frame = 0;
 }
 
 static void input(StateStack *state_stack)
@@ -55,45 +55,42 @@ static void input(StateStack *state_stack)
         return;
     }
 
-    Entity *entity = &character->entity;
-
-    // Load triggers at entity's location before moving and after moving to
+    // Load triggers at character's location before moving and after moving to
     // check for on_enter and on_exit triggers.
     const Trigger *pre_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
     const Trigger *post_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
 
-    get_triggers_at_xy(pre_triggers, entity->x, entity->y, game->current_map);
-    move_entity(entity, dx, dy, game->current_map);
-    get_triggers_at_xy(post_triggers, entity->x, entity->y, game->current_map);
+    get_triggers_at_xy(pre_triggers, character->x, character->y, game->current_map);
+    move_character(character, dx, dy, game->current_map);
+    get_triggers_at_xy(post_triggers, character->x, character->y, game->current_map);
 
     // Execute action triggers if A was pressed, otherwise check for enter/exit
     // triggers
     if (key_hit(KEY_A))
     {
-        execute_action_triggers(entity, game);
+        execute_action_triggers(character, game);
     } else
     {
         execute_enter_exit_triggers(pre_triggers, post_triggers, game);
     }
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
+    set_character_sprite_id(character, character->frame + character->direction * 16);
 }
 
 static void update()
 {
-    Entity *entity = &character->entity;
-    if (entity->frame_counter++ >= 10)
+    if (character->frame_counter++ >= 10)
     {
-        entity->frame_counter = 0;
+        character->frame_counter = 0;
 
         // Show next frame (each sprite has 4 8x8 sections)
-        entity->frame += 4;
+        character->frame += 4;
 
         // Check if frame wrapped around
-        if (entity->frame >= 4 * 4) entity->frame = 0;
+        if (character->frame >= 4 * 4) character->frame = 0;
 
         // Point OAM to correct sprite id
-        set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
+        set_character_sprite_id(character, character->frame + character->direction * 16);
     }
 }

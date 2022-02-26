@@ -3,8 +3,8 @@
 
 #include "actions.h"
 #include "camera.h"
+#include "character.h"
 #include "constants.h"
-#include "entity.h"
 #include "trigger.h"
 // sprite data
 #include "tiles.h"
@@ -91,10 +91,10 @@ void update_tilemap(const Map *map, Camera *camera)
     prev_cam = cam;
 }
 
-bool is_tile_passable(Entity *entity, int x_off, int y_off, const Map *map)
+bool is_tile_passable(Character *character, int x_off, int y_off, const Map *map)
 {
-    int x1 = entity->x + ENTITY_MARGIN_H + x_off;
-    int y1 = entity->y + (16 - ENTITY_HEIGHT) + y_off;
+    int x1 = character->x + ENTITY_MARGIN_H + x_off;
+    int y1 = character->y + (16 - ENTITY_HEIGHT) + y_off;
     int x2 = x1 + ENTITY_WIDTH - 1;
     int y2 = y1 + ENTITY_HEIGHT - 1;
 

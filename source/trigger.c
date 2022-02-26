@@ -78,13 +78,13 @@ void execute_enter_exit_triggers(const Trigger **pre_triggers,
     }
 }
 
-void execute_action_triggers(Entity *entity, Game *game)
+void execute_action_triggers(Character *character, Game *game)
 {
     const Trigger *triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
     int dy = 0;
     int dx = 0;
 
-    switch (entity->direction)
+    switch (character->direction)
     {
         case DOWN:
             dy = 1;
@@ -100,7 +100,7 @@ void execute_action_triggers(Entity *entity, Game *game)
             break;
     }
 
-    get_triggers_at_xy(triggers, entity->x + dx, entity->y + dy,
+    get_triggers_at_xy(triggers, character->x + dx, character->y + dy,
                        game->current_map);
 
     // TODO: Only execute first trigger found?

@@ -47,11 +47,17 @@ void initialize(StateType leaving_state, void *parameter)
     oam_init(obj_mem, 128);
 
     game.current_map = &map_1;
+    // load Tann
     game.player = &tann;
+    game.player->state = &wait_state;
+    game.player->entity = &E_TANN;
+    game.player->direction = DOWN;
+    game.player->x = game.current_map->start_x;
+    game.player->y = game.current_map->start_y;
 
     load_map(game.current_map, &game.camera);
-    load_character(&tann, &ES_TANN, 0, 20, 20);
-    load_character(&npcs[0], game.current_map->npcs[0].entity->sprite, 1, 40, 40);
+    load_character(&tann, &tann, 0);
+    load_character(&npcs[0], &game.current_map->npcs[0], 1);
     npcs[0].state = game.current_map->npcs[0].state;
 
     CharacterStateParam esp = {&tann, &game};
@@ -80,7 +86,7 @@ void update()
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
         Character *npc = &game.current_map->npcs[i];
-//        npc->state->update();
+        npc->state->update();
         break;
     }
 //    is_tile_passable(&tann.entity, map);

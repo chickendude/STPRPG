@@ -40,10 +40,10 @@ void execute_enter_exit_triggers(const Trigger **pre_triggers,
 /**
  * Runs on_action triggers.
  *
- * @param entity The entity to whose position and direction should be used to
+ * @param character The character whose position and direction should be used to
  * check for triggers.
  * @param game Main Game object.
  */
-void execute_action_triggers(Entity *entity, Game *game);
+void execute_action_triggers(Character *character, Game *game);
 
 #endif //STPRPG_TRIGGER_H
