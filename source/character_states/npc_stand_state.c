@@ -1,6 +1,7 @@
 #include "character_states/states.h"
 
 #include "character.h"
+#include "game.h"
 #include "state.h"
 
 static CharacterStateParam state_params;
@@ -12,7 +13,7 @@ static void initialize(StateType leaving_state, void *parameter);
 
 static void input(StateStack *state_stack);
 
-static void update();
+static void update(Character *player, Game *game);
 
 // External declaration
 const State npc_stand_state = {&initialize, &update, &input};
@@ -39,6 +40,13 @@ static void input(StateStack *state_stack)
 {
 }
 
-static void update()
+static void update(Character *npc, Game *game)
 {
+    if (npc == NULL) return;
+
+    set_character_pos(npc, &game->camera);
+    if (game->player->y > npc->y)
+        npc->oam->attr2 |= ATTR2_PRIO(3);
+    else
+        npc->oam->attr2 &= ~ATTR2_PRIO_MASK;
 }

@@ -7,7 +7,6 @@
 
 static CharacterStateParam state_params;
 static Character *character;
-static const Map *map;
 
 // -----------------------------------------------------------------------------
 // Private function declarations

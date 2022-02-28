@@ -8,11 +8,11 @@ struct Trigger
 {
     int map_x, map_y;
     ActionType on_enter_type;
-    void *on_enter;
+    const void *on_enter;
     ActionType on_exit_type;
-    void *on_exit;
+    const void *on_exit;
     ActionType on_action_type;
-    void *on_action;
+    const void *on_action;
 };
 
 /**

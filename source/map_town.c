@@ -86,16 +86,16 @@ void update()
     update_camera(camera, &tann);
     normalize_camera(camera, map);
     update_tilemap(map, camera);
-    draw_character(&tann, camera);
+    set_character_pos(&tann, camera);
     tann.state->update();
+
+    // Update NPCs
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
         Character *npc = &npcs[i];
-        if (npc != NULL){
-            draw_character(npc, camera);
-            npc->state->update();
-        }
+        npc->state->update(npc, &game);
     }
+
     REG_BG0HOFS = camera->x;
     REG_BG1HOFS = camera->x;
     REG_BG2HOFS = camera->x;

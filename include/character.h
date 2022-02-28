@@ -15,7 +15,14 @@ struct Character
     OBJ_ATTR *oam;
 };
 
-void draw_character(const Character *character, const Camera *camera);
+/**
+ * Updates the character's position on screen according to character and camera
+ * position.
+ *
+ * @param character Character whose position should be set.
+ * @param camera The game's camera, used to calculate position on screen.
+ */
+void set_character_pos(const Character *character, const Camera *camera);
 
 void load_character(Character *character_dst, const Character *character_src, int oam_index);
 

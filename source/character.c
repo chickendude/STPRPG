@@ -17,7 +17,7 @@
 // Public function definitions
 // -----------------------------------------------------------------------------
 
-void draw_character(const Character *character, const Camera *camera)
+void set_character_pos(const Character *character, const Camera *camera)
 {
     int x = character->x - camera->x;
     int y = character->y - camera->y;
