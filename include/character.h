@@ -2,6 +2,7 @@
 #define STPRPG_CHARACTER_H
 
 #include "sprite.h"
+#include "character_states/states.h"
 #include "types.h"
 
 struct Character
@@ -11,6 +12,7 @@ struct Character
     int x, y;
     SpriteDirection direction;
     // Optional fields (should be set to zero/filled in automatically)
+    CharacterStateParam state_params;
     int frame, frame_counter;
     OBJ_ATTR *oam;
 };

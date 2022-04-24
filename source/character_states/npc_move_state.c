@@ -1,12 +1,9 @@
 #include "character_states/states.h"
 
 #include "character.h"
-#include "constants.h"
+#include "game.h"
 #include "state.h"
-#include "trigger.h"
 
-static CharacterStateParam state_params;
-static Character *character;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -15,10 +12,10 @@ static void initialize(StateType leaving_state, void *character);
 
 static void input(StateStack *state_stack);
 
-static void update();
+static void update(Character *player, Game *game);
 
 // External declaration
-const State wait_state = {&initialize, &update, &input};
+const State npc_move_state = {&initialize, &update, &input};
 
 // -----------------------------------------------------------------------------
 // Public function definitions
@@ -28,28 +25,29 @@ const State wait_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-void initialize(StateType leaving_state, void *param_cm)
+void initialize(StateType leaving_state, void *character)
 {
+    // Cast parameters to CharacterStateParam
+    Character *npc = (Character *) character;
+
     // Reset entity's sprite data
-    character = param_cm;
-    state_params = character->state_params;
-    character->frame = 0;
-    set_character_sprite_id(character, character->direction * 16);
+    npc->frame = 0;
+    set_character_sprite_id(npc, npc->direction * 16);
 }
 
 static void input(StateStack *state_stack)
 {
-    // Check if any arrow key was pressed and switch to move state if so
-    if (key_tri_vert() || key_tri_horz())
-    {
-        change_state(character, &move_state);
-    } else if (key_hit(KEY_A))
-    {
-        execute_action_triggers(character, character->state_params.game);
-    }
-
 }
 
-static void update()
+static void update(Character *npc, Game *game)
 {
+    if (npc == NULL) return;
+
+    move_character(npc, 1, 1, game->current_map);
+
+    set_character_pos(npc, &game->camera);
+    if (game->player->y > npc->y)
+        npc->oam->attr2 |= ATTR2_PRIO(3);
+    else
+        npc->oam->attr2 &= ~ATTR2_PRIO_MASK;
 }

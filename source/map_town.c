@@ -20,7 +20,7 @@ static Character npcs[2];
 // -----------------------------------------------------------------------------
 
 // State definitions
-static void initialize(StateType leaving_state, void *parameter);
+static void initialize(StateType leaving_state, void *character);
 
 static void input(StateStack *state_stack);
 
@@ -65,9 +65,9 @@ void initialize(StateType leaving_state, void *parameter)
         npc->state->initialize(NONE, &esp);
     }
 
-    CharacterStateParam esp = {&tann, &game};
-    change_state(esp, &wait_state);
-    tann.state->initialize(NONE, &esp);
+    tann.state_params.game = &game;
+    change_state(&tann, &wait_state);
+//    tann.state->initialize(NONE, &csp);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 |

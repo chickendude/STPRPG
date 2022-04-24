@@ -17,7 +17,7 @@ static Character *character;
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
-static void initialize(StateType leaving_state, void *parameter);
+static void initialize(StateType leaving_state, void *character);
 
 static void input(StateStack *state_stack);
 
@@ -36,9 +36,9 @@ const State move_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 static void initialize(StateType leaving_state, void *parameter)
 {
-    state_params = parameter;
-    game = state_params->game;
-    character = state_params->character;
+    character = parameter;
+    game = character->state_params.game;
+//    character = state_params->character;
     character->frame = 0;
 }
 
@@ -51,7 +51,7 @@ static void input(StateStack *state_stack)
     // Check if keys were released
     if (dx == 0 && dy == 0)
     {
-        change_state(*state_params, &wait_state);
+        change_state(character, &wait_state);
         return;
     }
 

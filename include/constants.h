@@ -5,8 +5,8 @@
 
 /**
  * The number of 16x16 tiles that will cover the whole width of the map + one
- * extra for scrolling.
- *
+ * extra for scrolling.\n
+ * \n
  * A GBA background can fit 32 8x8 tiles, since we are using 16x16 tiles we can
  * only fit 16 in it.
  */
@@ -14,8 +14,8 @@
 
 /**
  * The number of 16x16 tiles that will cover the height of the map with one
- * extra so that it shows up when scrolling.
- *
+ * extra so that it shows up when scrolling.\n
+ * \n
  * 160 / 8 = 20 tiles, but each entry is 16x16 so that's 10 tiles. We draw one
  * extra for scrolling.
  */
@@ -39,8 +39,8 @@
 #define ENTITY_WIDTH 12
 
 /**
- * Sprite's horizontal margin.
- *
+ * Sprite's horizontal margin.\n
+ * \n
  * This is how many pixels there are on either side of an entity's sprite.
  */
 #define ENTITY_MARGIN_H ((TILE_SIZE - ENTITY_WIDTH) / 2)
@@ -56,8 +56,8 @@
 #define NUM_MAPS 1
 
 /**
- * The number of pixels to move when running.
- *
+ * The number of pixels to move when running.\n
+ * \n
  * The default speed otherwise is one pixel per frame.
  */
 #define RUNNING_SPEED 6

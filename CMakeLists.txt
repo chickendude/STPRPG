@@ -22,6 +22,8 @@ add_executable(stprpg
         source/character.c
         include/character.h
         source/character_states/move_state.c
+        source/character_states/npc_move_state.c
+        source/character_states/npc_stand_state.c
         source/character_states/wait_state.c
         source/character_states/states.c
         include/character_states/states.h
@@ -31,5 +33,5 @@ add_executable(stprpg
         include/trigger.h
         include/game.c
         include/game.h
-        maps/map1.c
+        maps/map1.s
         maps/map1_data.c)

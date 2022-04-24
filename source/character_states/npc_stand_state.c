@@ -4,12 +4,11 @@
 #include "game.h"
 #include "state.h"
 
-static CharacterStateParam state_params;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
 // -----------------------------------------------------------------------------
-static void initialize(StateType leaving_state, void *parameter);
+static void initialize(StateType leaving_state, void *character);
 
 static void input(StateStack *state_stack);
 
@@ -26,14 +25,14 @@ const State npc_stand_state = {&initialize, &update, &input};
 // -----------------------------------------------------------------------------
 // Private functions definitions
 // -----------------------------------------------------------------------------
-void initialize(StateType leaving_state, void *param_cm)
+void initialize(StateType leaving_state, void *character)
 {
-    state_params = *(CharacterStateParam *) param_cm;
+    // Cast parameters to CharacterStateParam
+    Character *npc = (Character *) character;
 
     // Reset entity's sprite data
-    Character *character = state_params.character;
-    character->frame = 0;
-    set_character_sprite_id(character, character->direction * 16);
+    npc->frame = 0;
+    set_character_sprite_id(character, npc->direction * 16);
 }
 
 static void input(StateStack *state_stack)
@@ -43,6 +42,13 @@ static void input(StateStack *state_stack)
 static void update(Character *npc, Game *game)
 {
     if (npc == NULL) return;
+
+    if (++npc->frame_counter % 128 == 0)
+    {
+        CharacterStateParam csp;
+        csp.game = game;
+        change_state(npc, &npc_move_state);
+    }
 
     set_character_pos(npc, &game->camera);
     if (game->player->y > npc->y)
