@@ -50,4 +50,6 @@ static void update(Character *npc, Game *game)
         npc->oam->attr2 |= ATTR2_PRIO(3);
     else
         npc->oam->attr2 &= ~ATTR2_PRIO_MASK;
+
+    update_animation(npc);
 }

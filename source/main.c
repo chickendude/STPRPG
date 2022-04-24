@@ -10,7 +10,8 @@
 //---------------------------------------------------------------------------------
 // Program entry point
 //---------------------------------------------------------------------------------
-int main(void) {
+int main(void)
+{
 //---------------------------------------------------------------------------------
     StateStack state_stack;
     state_stack.index = 0;
@@ -19,7 +20,8 @@ int main(void) {
     const State *cur_state = state_stack.states[state_stack.index];
     cur_state->initialize(NONE, NULL);
 
-    int i = 0;
+    // Just to hide syntax warnings
+    int volatile i = 0;
     while (i >= 0)
     {
         cur_state = state_stack.states[state_stack.index];

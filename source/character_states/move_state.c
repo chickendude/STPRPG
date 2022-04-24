@@ -80,17 +80,5 @@ static void input(StateStack *state_stack)
 
 static void update()
 {
-    if (character->frame_counter++ >= 10)
-    {
-        character->frame_counter = 0;
-
-        // Show next frame (each sprite has 4 8x8 sections)
-        character->frame += 4;
-
-        // Check if frame wrapped around
-        if (character->frame >= 4 * 4) character->frame = 0;
-
-        // Point OAM to correct sprite id
-        set_character_sprite_id(character, character->frame + character->direction * 16);
-    }
+    update_animation(character);
 }

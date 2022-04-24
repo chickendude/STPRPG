@@ -17,6 +17,13 @@ struct Character
     OBJ_ATTR *oam;
 };
 
+void load_character(Character *character_dst, const Character *character_src, int oam_index);
+
+void move_character(Character *character, int dx, int dy, const Map *map);
+
+void
+set_character_sprite_id(const Character *character, unsigned int sprite_id);
+
 /**
  * Updates the character's position on screen according to character and camera
  * position.
@@ -26,11 +33,12 @@ struct Character
  */
 void set_character_pos(const Character *character, const Camera *camera);
 
-void load_character(Character *character_dst, const Character *character_src, int oam_index);
-
-void move_character(Character *character, int dx, int dy, const Map *map);
-
-void
-set_character_sprite_id(const Character *character, unsigned int sprite_id);
+/**
+ * Updates the character's animation frame count and advances to the next frame
+ * if needed.
+ *
+ * @param character Character you want to animate.
+ */
+void update_animation(Character *character)
 
 #endif //STPRPG_CHARACTER_H
