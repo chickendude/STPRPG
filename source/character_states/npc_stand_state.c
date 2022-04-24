@@ -51,8 +51,5 @@ static void update(Character *npc, Game *game)
     }
 
     set_character_pos(npc, &game->camera);
-    if (game->player->y > npc->y)
-        npc->oam->attr2 |= ATTR2_PRIO(3);
-    else
-        npc->oam->attr2 &= ~ATTR2_PRIO_MASK;
+    update_character_priority(game->player, npc);
 }

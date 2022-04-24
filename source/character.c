@@ -120,10 +120,10 @@ void set_character_sprite_id(const Character *character, unsigned int sprite_id)
 {
     int attr2 = character->oam->attr2 & ~ATTR2_ID_MASK;
     character->oam->attr2 = attr2 | sprite_id;
-
 }
 
-void update_animation(Character *character) {
+void update_animation(Character *character)
+{
     if (character->frame_counter++ >= 10)
     {
         character->frame_counter = 0;
@@ -135,7 +135,20 @@ void update_animation(Character *character) {
         if (character->frame >= 4 * 4) character->frame = 0;
 
         // Point OAM to correct sprite id
-        set_character_sprite_id(character, character->frame + character->direction * 16);
+        set_character_sprite_id(character,
+                                character->frame + character->direction * 16);
+    }
+}
+
+void
+update_character_priority(const Character *character1, Character *character2)
+{
+    character2->oam->attr2 &= ~ATTR2_PRIO_MASK;
+    if (character1->y > character2->y)
+        character2->oam->attr2 |= ATTR2_PRIO(2);
+    else
+    {
+        character2->oam->attr2 |= ATTR2_PRIO(1);
     }
 }
 // -----------------------------------------------------------------------------

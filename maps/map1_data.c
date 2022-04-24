@@ -29,7 +29,7 @@ const Character npcs[NUM_NPCS] = {
                 &S_TANN,
                 &npc_stand_state,
                 2,
-                2,
+                3,
                 DOWN
         },
         {

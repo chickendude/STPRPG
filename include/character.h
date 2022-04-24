@@ -17,12 +17,23 @@ struct Character
     OBJ_ATTR *oam;
 };
 
-void load_character(Character *character_dst, const Character *character_src, int oam_index);
+void load_character(Character *character_dst, const Character *character_src,
+                    int oam_index);
 
 void move_character(Character *character, int dx, int dy, const Map *map);
 
 void
 set_character_sprite_id(const Character *character, unsigned int sprite_id);
+
+/**
+ * Handles z-ordering between players so that sprites aren't drawn over top of
+ * each other.
+ *
+ * @param character1 Character whose Y position will be used for sorting.
+ * @param character2 Character who will have z-ordering applied to them.
+ */
+void update_character_priority(const Character *character1,
+                               Character *character2);
 
 /**
  * Updates the character's position on screen according to character and camera
@@ -39,6 +50,6 @@ void set_character_pos(const Character *character, const Camera *camera);
  *
  * @param character Character you want to animate.
  */
-void update_animation(Character *character)
+void update_animation(Character *character);
 
 #endif //STPRPG_CHARACTER_H

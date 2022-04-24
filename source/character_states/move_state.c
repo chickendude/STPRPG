@@ -10,7 +10,6 @@
 #include "state.h"
 #include "trigger.h"
 
-static CharacterStateParam *state_params;
 static Game *game;
 static Character *character;
 
@@ -38,7 +37,6 @@ static void initialize(StateType leaving_state, void *parameter)
 {
     character = parameter;
     game = character->state_params.game;
-//    character = state_params->character;
     character->frame = 0;
 }
 
