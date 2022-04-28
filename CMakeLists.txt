@@ -31,7 +31,7 @@ add_executable(stprpg
         include/actions.h
         source/trigger.c
         include/trigger.h
-        include/game.c
+        source/game.c
         include/game.h
         maps/map1.s
-        maps/map1_data.c)
+        maps/map1_data.c source/mathtools.c include/mathtools.h)

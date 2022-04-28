@@ -2,6 +2,7 @@
 
 #include "character.h"
 #include "game.h"
+#include "mathtools.h"
 #include "state.h"
 
 
@@ -32,6 +33,7 @@ void initialize(StateType leaving_state, void *character)
 
     // Reset entity's sprite data
     npc->frame = 0;
+    npc->frame_counter = random(128);
     set_character_sprite_id(character, npc->direction * 16);
 }
 
@@ -45,8 +47,13 @@ static void update(Character *npc, Game *game)
 
     if (++npc->frame_counter % 128 == 0)
     {
-        CharacterStateParam csp;
-        csp.game = game;
+        npc->state_params.game = game;
+        // dx
+        npc->state_params.param1 = random(2) * 2 - 1;
+        // dy
+        npc->state_params.param2 = random(2) * 2 - 1;
+        // num frames
+        npc->state_params.param3 = random(32) + 1;
         change_state(npc, &npc_move_state);
     }
 

@@ -61,8 +61,9 @@ void initialize(StateType leaving_state, void *parameter)
     {
         Character *npc = &npcs[i];
         load_character(npc, &game.current_map->npcs[i], i + 1);
-        CharacterStateParam esp = {npc, &game};
-        npc->state->initialize(NONE, &esp);
+        npc->state_params.game = &game;
+        change_state(npc, &npc_stand_state);
+//        npc->state->initialize(NONE, &esp);
     }
 
     tann.state_params.game = &game;

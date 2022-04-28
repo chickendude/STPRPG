@@ -43,9 +43,16 @@ static void update(Character *npc, Game *game)
 {
     if (npc == NULL) return;
 
-    move_character(npc, 1, 1, game->current_map);
+    int dx = npc->state_params.param1;
+    int dy = npc->state_params.param2;
+    move_character(npc, dx, dy, game->current_map);
 
     set_character_pos(npc, &game->camera);
     update_character_priority(game->player, npc);
     update_animation(npc);
+
+    if (--npc->state_params.param3 == 0)
+    {
+        change_state(npc, &npc_stand_state);
+    }
 }
