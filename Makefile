@@ -4,6 +4,14 @@ export DEVKITPRO=/opt/devkitpro
 .SUFFIXES:
 #---------------------------------------------------------------------------------
 
+ifeq ($(strip $(LIBGBA)),)
+$(error "Please set LIBGBA in your environment. export LIBGBA=${DEVKITPRO}/libgba")
+endif
+
+ifeq ($(strip $(LIBTONC)),)
+$(error "Please set LIBTONC in your environment. export LIBTONC=${DEVKITPRO}/libtonc")
+endif
+
 ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif

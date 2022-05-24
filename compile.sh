@@ -7,4 +7,11 @@ clear
 cd ..
 make
 #sleep 1
-open stprpg.gba -a mgba
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     mgba-qt STPRPG.gba;;
+    Darwin*)    open stprpg.gba -a mgba;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
