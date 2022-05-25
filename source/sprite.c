@@ -6,9 +6,11 @@
 #include "map.h"
 
 // Sprite data
+#include "chasqui.h"
 #include "tann.h"
 
-const Sprite S_TANN = {&tannTiles, tannTilesLen};
+const Sprite S_CHASQUI = {&chasquiTiles, chasquiTilesLen, 8, 6};
+const Sprite S_TANN = {&tannTiles, tannTilesLen, 4, 4};
 
 // -----------------------------------------------------------------------------
 // Private function declarations

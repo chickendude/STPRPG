@@ -26,14 +26,14 @@ const Trigger map_1_triggers[NUM_TRIGGERS] = {
 
 const Character npcs[NUM_NPCS] = {
         {
-                &S_TANN,
+                &S_CHASQUI,
                 &npc_stand_state,
                 2,
                 3,
                 DOWN
         },
         {
-                &S_TANN,
+                &S_CHASQUI,
                 &npc_stand_state,
                 3,
                 3,

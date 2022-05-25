@@ -34,7 +34,9 @@ void initialize(StateType leaving_state, void *param_cm)
     character = param_cm;
     state_params = character->state_params;
     character->frame = 0;
-    set_character_sprite_id(character, character->direction * 16);
+    const int num_frames =
+            character->entity->sprite_size * character->entity->sprite_frames;
+    set_character_sprite_id(character, character->direction * num_frames);
 }
 
 static void input(StateStack *state_stack)

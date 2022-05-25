@@ -58,9 +58,11 @@ static void input(StateStack *state_stack)
     const Trigger *pre_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
     const Trigger *post_triggers[MAX_TRIGGERS] = {NULL, NULL, NULL, NULL};
 
-    get_triggers_at_xy(pre_triggers, character->x, character->y, game->current_map);
+    get_triggers_at_xy(pre_triggers, character->x, character->y,
+                       game->current_map);
     move_character(character, dx, dy, game->current_map);
-    get_triggers_at_xy(post_triggers, character->x, character->y, game->current_map);
+    get_triggers_at_xy(post_triggers, character->x, character->y,
+                       game->current_map);
 
     // Execute action triggers if A was pressed, otherwise check for enter/exit
     // triggers
@@ -73,7 +75,10 @@ static void input(StateStack *state_stack)
     }
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_character_sprite_id(character, character->frame + character->direction * 16); // TODO: Was 48, update characters to include size
+    const int frames =
+            character->entity->sprite_frames * character->entity->sprite_size;
+    set_character_sprite_id(character, character->frame +
+                                       character->direction * frames);
 }
 
 static void update()

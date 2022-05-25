@@ -12,7 +12,7 @@
 #include "state.h"
 
 static Game game;
-static Character tann;
+static Character chasqui;
 static Character npcs[2];
 
 // -----------------------------------------------------------------------------
@@ -47,16 +47,16 @@ void initialize(StateType leaving_state, void *parameter)
     oam_init(obj_mem, 128);
 
     game.current_map = &map_1;
-    // load Tann
-    game.player = &tann;
+    // load chasqui
+    game.player = &chasqui;
     game.player->state = &wait_state;
-    game.player->entity = &S_TANN;
+    game.player->entity = &S_CHASQUI;
     game.player->direction = DOWN;
     game.player->x = game.current_map->start_x;
     game.player->y = game.current_map->start_y;
 
     load_map(game.current_map, &game.camera);
-    load_character(&tann, &tann, 0);
+    load_character(&chasqui, &chasqui, 0);
     for (int i = 0; i < game.current_map->num_npcs; i++)
     {
         Character *npc = &npcs[i];
@@ -66,9 +66,9 @@ void initialize(StateType leaving_state, void *parameter)
 //        npc->state->initialize(NONE, &esp);
     }
 
-    tann.state_params.game = &game;
-    change_state(&tann, &wait_state);
-//    tann.state->initialize(NONE, &csp);
+    chasqui.state_params.game = &game;
+    change_state(&chasqui, &wait_state);
+//    chasqui.state->initialize(NONE, &csp);
 
     vid_vsync();
     REG_DISPCNT = DCNT_MODE0 |
@@ -84,11 +84,11 @@ void update()
     Camera *camera = &game.camera;
     const Map *map = game.current_map;
 
-    update_camera(camera, &tann);
+    update_camera(camera, &chasqui);
     normalize_camera(camera, map);
     update_tilemap(map, camera);
-    set_character_pos(&tann, camera);
-    tann.state->update();
+    set_character_pos(&chasqui, camera);
+    chasqui.state->update();
 
     // Update NPCs
     for (int i = 0; i < game.current_map->num_npcs; i++)
@@ -107,7 +107,7 @@ void update()
 
 void input(StateStack *state_stack)
 {
-    tann.state->input(NULL);
+    chasqui.state->input(NULL);
 }
 
 // -----------------------------------------------------------------------------

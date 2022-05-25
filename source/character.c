@@ -6,7 +6,7 @@
 #include "map.h"
 
 // Sprite data
-#include "tann.h"
+#include "chasqui.h"
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -38,7 +38,7 @@ void load_character(Character *character_dst, const Character *character_src,
     const Sprite *sprite = character_src->entity;
     // Load sprite sprites
     memcpy32(tile_mem[4], sprite->data, sprite->data_len / 4);
-    memcpy32(pal_obj_mem, tannPal, tannPalLen / 4);
+    memcpy32(pal_obj_mem, chasquiPal, chasquiPalLen / 4);
 
     *character_dst = *character_src;
 
@@ -47,9 +47,16 @@ void load_character(Character *character_dst, const Character *character_src,
 
     character_dst->oam = &obj_mem[oam_index];
 
+    int sprite_height = ATTR0_SQUARE;
+    int sprite_width = ATTR1_SIZE_16;
+    if (sprite->sprite_size > 4) {
+        sprite_height = ATTR0_TALL;
+        sprite_width = ATTR1_SIZE_16x32;
+    }
+
     obj_set_attr(character_dst->oam,
-                 ATTR0_4BPP | ATTR0_SQUARE | character_dst->y,
-                 ATTR1_SIZE_16x16 | character_dst->x,
+                 ATTR0_4BPP | sprite_height | character_dst->y,
+                 sprite_width | character_dst->x,
                  ATTR2_PALBANK(0) | ATTR2_PRIO(2) | 0
     );
 }
@@ -128,15 +135,18 @@ void update_animation(Character *character)
     {
         character->frame_counter = 0;
 
-        // Show next frame (each sprite has 4 8x8 sections)
-        character->frame += 4;
+        // Show next frame (each sprite has 8 8x8 sections)
+        character->frame += 8;
 
-        // Check if frame wrapped around
-        if (character->frame >= 4 * 4) character->frame = 0;
+        // Check if frame wrapped around (6 frames, 8 tiles in each one)
+        const Sprite *s = character->entity;
+        const int num_frames = s->sprite_size * s->sprite_frames;
+        if (character->frame >= num_frames) character->frame = 0;
 
         // Point OAM to correct sprite id
         set_character_sprite_id(character,
-                                character->frame + character->direction * 16);
+                                character->frame +
+                                character->direction * 48);
     }
 }
 
