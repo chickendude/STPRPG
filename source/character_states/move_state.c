@@ -46,7 +46,7 @@ static void input(StateStack *state_stack)
     int dx = key_tri_horz() * speed;
     int dy = key_tri_vert() * speed;
 
-    // Check if keys were released
+    // Check if arrow keys were released
     if (dx == 0 && dy == 0)
     {
         change_state(character, &wait_state);
@@ -73,7 +73,7 @@ static void input(StateStack *state_stack)
     }
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_character_sprite_id(character, character->frame + character->direction * 16);
+    set_character_sprite_id(character, character->frame + character->direction * 16); // TODO: Was 48, update characters to include size
 }
 
 static void update()
