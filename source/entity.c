@@ -6,9 +6,9 @@
 #include "map.h"
 
 // Sprite data
-#include "tann.h"
+#include "chasqui.h"
 
-const EntitySprite ES_TANN = {&tannTiles, tannTilesLen};
+const EntitySprite ES_TANN = {&chasquiTiles, chasquiTilesLen};
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -24,7 +24,7 @@ load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x,
 {
     // Load entity sprites
     memcpy32(tile_mem[4], sprite->data, sprite->data_len / 4);
-    memcpy32(pal_obj_mem, tannPal, tannPalLen / 4);
+    memcpy32(pal_obj_mem, chasquiPal, chasquiPalLen / 4);
 
     // Load entity's initial coordinates
     entity->x = x;
@@ -32,8 +32,8 @@ load_entity(Entity *entity, const EntitySprite *sprite, int oam_index, int x,
     entity->oam = &obj_mem[oam_index];
 
     obj_set_attr(entity->oam,
-                 ATTR0_4BPP | ATTR0_SQUARE | y,
-                 ATTR1_SIZE_16x16 | x,
+                 ATTR0_4BPP | ATTR0_TALL | y,
+                 ATTR1_SIZE_16x32 | x,
                  ATTR2_PALBANK(0) | ATTR2_PRIO(2) | 0
     );
 

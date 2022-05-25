@@ -7,7 +7,7 @@
 // Note: The code to calculate the sprite id relies on this order
 enum EntityDirection
 {
-    DOWN, UP, LEFT, RIGHT
+    UP, DOWN, LEFT, RIGHT
 };
 
 struct EntitySprite

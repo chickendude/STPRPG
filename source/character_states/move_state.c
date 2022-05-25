@@ -48,7 +48,7 @@ static void input(StateStack *state_stack)
     int dx = key_tri_horz() * speed;
     int dy = key_tri_vert() * speed;
 
-    // Check if keys were released
+    // Check if arrow keys were released
     if (dx == 0 && dy == 0)
     {
         change_state(*state_params, &wait_state);
@@ -77,7 +77,7 @@ static void input(StateStack *state_stack)
     }
 
     // TODO: Otherwise it takes a couple frames to update the player's direction
-    set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
+    set_entity_sprite_id(entity, entity->frame + entity->direction * 48);
 }
 
 static void update()
@@ -87,13 +87,13 @@ static void update()
     {
         entity->frame_counter = 0;
 
-        // Show next frame (each sprite has 4 8x8 sections)
-        entity->frame += 4;
+        // Show next frame (each sprite has 8 8x8 sections)
+        entity->frame += 8;
 
         // Check if frame wrapped around
-        if (entity->frame >= 4 * 4) entity->frame = 0;
+        if (entity->frame >= 8 * 6) entity->frame = 0;
 
         // Point OAM to correct sprite id
-        set_entity_sprite_id(entity, entity->frame + entity->direction * 16);
+        set_entity_sprite_id(entity, entity->frame + entity->direction * 48);
     }
 }
